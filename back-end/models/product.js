@@ -19,12 +19,13 @@ const getProductsFromFile = (cb) => {
 };
 
 module.exports = class Product {
-  constructor(t, i, p, d) {
+  constructor(t, i, p, d, id) {
     // thêm các thuộc tính khác vào chỗ này
     (this.title = t),
       (this.imageUrl = i),
       (this.price = p),
-      (this.description = d);
+      (this.description = d),
+      (this.id = id);
   }
 
   save() {
@@ -38,5 +39,12 @@ module.exports = class Product {
 
   static fetchAll(cb) {
     getProductsFromFile(cb); // cd là callback function
+  }
+
+  static findById(id, cb) {
+    getProductsFromFile((products) => {
+      const product = products.find((p) => p.id === id);
+      cb(product);
+    });
   }
 };
