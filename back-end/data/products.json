@@ -1,0 +1,14 @@
+[
+  {
+    "title": "A Book",
+    "imageUrl": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+    "description": "This is an awesome book!",
+    "price": "19"
+  },
+  {
+    "title": "Escanor",
+    "imageUrl": "https://i.pinimg.com/originals/54/9b/72/549b727e906200a92af56be81fbf79a2.jpg",
+    "price": "priceless",
+    "description": "my favorite character"
+  }
+]
