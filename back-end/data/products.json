@@ -1,1 +1,23 @@
-[{"title":"A Book","imageUrl":"https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg","description":"This is an awesome book!","price":"19","id":"15"},{"title":"Escanor","imageUrl":"https://i.pinimg.com/originals/54/9b/72/549b727e906200a92af56be81fbf79a2.jpg","price":"priceless","description":"my favorite character","id":"27"},{"title":"adsad","imageUrl":"https://hips.hearstapps.com/hmg-prod/images/beautiful-smooth-haired-red-cat-lies-on-the-sofa-royalty-free-image-1678488026.jpg?crop=0.88847xw:1xh;center,top&resize=1200:*","price":"96","description":"cute cat","id":"36"}]
+[
+  {
+    "title": "A Book",
+    "imageUrl": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+    "description": "This is an awesome book!",
+    "price": "19",
+    "id": "15"
+  },
+  {
+    "title": "Escanor",
+    "imageUrl": "https://i.pinimg.com/originals/54/9b/72/549b727e906200a92af56be81fbf79a2.jpg",
+    "price": "45",
+    "description": "my favorite character",
+    "id": "27"
+  },
+  {
+    "title": "adsad",
+    "imageUrl": "https://hips.hearstapps.com/hmg-prod/images/beautiful-smooth-haired-red-cat-lies-on-the-sofa-royalty-free-image-1678488026.jpg?crop=0.88847xw:1xh;center,top&resize=1200:*",
+    "price": "96",
+    "description": "cute cat",
+    "id": "36"
+  }
+]

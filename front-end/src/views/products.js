@@ -18,8 +18,23 @@ const Products = (props) => {
   }, []);
 
   const handleNavigate = (id) => {
-    // navigate(`/product/${id}`);
-    window.location.replace(`http://localhost:3000/products/${id}`);
+    navigate(`/product/${id}`);
+    // window.location.replace(`http://localhost:3000/products/${id}`);
+  };
+
+  const addCart = (id) => {
+    fetch(`http://localhost:5000/cart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -50,7 +65,14 @@ const Products = (props) => {
                   </button>
                 </div>
                 <div className="card__actions">
-                  <button className="btn">Add to Cart</button>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      addCart(items.id);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </article>
             </div>
