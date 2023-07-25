@@ -33,6 +33,15 @@ exports.getCarts = (req, res, next) => {
   });
 };
 
+exports.getCartDeleteProduct = (req, res, next) => {
+  const prodId = req.params.id;
+  console.log(prodId);
+  Product.findById(prodId, (product) => {
+    Cart.deleteProduct(prodId, product.price);
+    res.status(200).send(true);
+  });
+};
+
 exports.getIndex = (req, res, next) => {
   Product.fetchAll((products) => {
     // truyền vô fetchAll là callback function có tham số là products
