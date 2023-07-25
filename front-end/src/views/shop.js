@@ -32,9 +32,9 @@ const Shop = (props) => {
                   <h2 className="product__price">${items.price}</h2>
                   <p className="product__description">{items.description}</p>
                 </div>
-                <div className="card__actions">
+                {/* <div className="card__actions">
                   <button className="btn">Add to Cart</button>
-                </div>
+                </div> */}
               </article>
             </div>
           );

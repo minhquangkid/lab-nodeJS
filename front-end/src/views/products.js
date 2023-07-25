@@ -18,7 +18,7 @@ const Products = (props) => {
   }, []);
 
   const handleNavigate = (id) => {
-    navigate(`/product/${id}`);
+    navigate(`/products/${id}`);
     // window.location.replace(`http://localhost:3000/products/${id}`);
   };
 

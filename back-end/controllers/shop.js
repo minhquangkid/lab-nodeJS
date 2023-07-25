@@ -12,6 +12,27 @@ exports.getProducts = (req, res, next) => {
   });
 };
 
+exports.getCarts = (req, res, next) => {
+  Cart.getCart((cart) => {
+    Product.fetchAll((products) => {
+      const cartProducts = [];
+      for (product of products) {
+        const cartProductData = cart.products.find(
+          (prod) => prod.id === product.id
+        );
+        if (cartProductData) {
+          cartProducts.push({ productData: product, qty: cartProductData.qty });
+        }
+      }
+      res.status(200).send({
+        path: "/cart",
+        pageTitle: "Your Cart",
+        products: cartProducts,
+      });
+    });
+  });
+};
+
 exports.getIndex = (req, res, next) => {
   Product.fetchAll((products) => {
     // truyền vô fetchAll là callback function có tham số là products
