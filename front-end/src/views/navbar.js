@@ -35,6 +35,14 @@ const Navbar = (props) => {
               Add product
             </a>
           </li>
+          <li className="main-header__item">
+            <a
+              className={props.receive === "/admin" ? "active" : ""}
+              href="/admin"
+            >
+              Admin
+            </a>
+          </li>
         </ul>
       </nav>
     </header>

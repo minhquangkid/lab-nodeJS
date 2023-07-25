@@ -5,6 +5,8 @@ import Shop from "./views/shop";
 import AddProduct from "./views/addProduct";
 import Products from "./views/products";
 import ProductDetail from "./views/product-detail";
+import Admin from "./views/admin";
+import EditProduct from "./views/editProduct";
 
 function App() {
   const [link, setLink] = useState(""); // dùng để kích hoạt thuộc tính active trong thanh navbar
@@ -21,6 +23,8 @@ function App() {
         <Route path="/products" element={<Products url={getUrl} />} />
         <Route path="/products/:id" element={<ProductDetail url={getUrl} />} />
         <Route path="/add-product" element={<AddProduct url={getUrl} />} />
+        <Route path="/edit-product/:id" element={<EditProduct />} />
+        <Route path="/admin" element={<Admin url={getUrl} />} />
       </Routes>
     </Fragment>
   );
