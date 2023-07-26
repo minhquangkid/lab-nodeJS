@@ -3,6 +3,8 @@ const path = require("path");
 
 const Cart = require("./cart");
 
+const db = require("../util/database");
+
 const p = path.join(
   path.dirname(process.mainModule.filename),
   "data",
@@ -39,8 +41,8 @@ module.exports = class Product {
     }); // nguyên cái arrow function này là hàm cb
   }
 
-  static fetchAll(cb) {
-    getProductsFromFile(cb); // cd là callback function
+  static fetchAll() {
+    return db.execute("SELECT * FROM products_2");
   }
 
   static deleteById(id) {
@@ -67,10 +69,7 @@ module.exports = class Product {
     });
   }
 
-  static findById(id, cb) {
-    getProductsFromFile((products) => {
-      const product = products.find((p) => p.id === id);
-      cb(product);
-    });
+  static findById(id) {
+    return db.execute("SELECT * FROM products_2 WHERE products_2.id = ?", [id]);
   }
 };
