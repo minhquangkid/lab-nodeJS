@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Cart = require("../models/cart");
+const { where } = require("sequelize");
 
 exports.getAddProduct = (req, res, next) => {
   res.send({
@@ -33,8 +34,9 @@ exports.postAddProduct = (req, res, next) => {
 exports.editProduct = (req, res, next) => {
   console.log(req.body);
   console.log(req.body.id);
-  Product.update(req.body);
-  res.redirect("http://localhost:3000");
+  Product.update(req.body, {where : { id : req.body.id}}).then((data)=>{
+    res.redirect("http://localhost:3000");
+  }).catch(err=> console.log(err));
 };
 
 exports.deleteProduct = (req, res, next) => {
