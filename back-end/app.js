@@ -3,7 +3,8 @@ const express = require("express");
 const cors = require("cors"); // dùng cái này mới có thể liên kết FE ở localhost:3000 và BE ở localhost:5000 được
 const app = express();
 app.use(cors());
-const db = require("./util/database");
+
+const sequelize = require('./util/database');
 
 // dùng 2 dòng này của express thì mới có thể biên dịch được req.body của app.post bên dưới
 app.use(express.json()); // for parsing application/json
@@ -26,4 +27,12 @@ app.use(shopRoutes);
 
 //app.use(errorController.get404);
 
-app.listen(5000);
+sequelize
+  .sync()
+  .then(result => {
+    console.log(result);
+    app.listen(5000);
+  })
+  .catch(err => {
+    console.log(err);
+  });

@@ -24,11 +24,11 @@ const AddProduct = (props) => {
           <label htmlFor="title">Title</label>
           <input type="text" name="title" id="title" />
           <label htmlFor="title">Image URL</label>
-          <input type="text" name="image" id="image" />
+          <input type="text" name="imageUrl" id="imageUrl" />
           <label htmlFor="title">Price</label>
           <input type="text" name="price" id="price" />
           <label htmlFor="title">Description</label>
-          <textarea type="text" name="des" id="des" />
+          <textarea type="text" name="description" id="description" />
         </div>
 
         <button className="btn" type="submit">
