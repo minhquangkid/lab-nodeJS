@@ -55,14 +55,20 @@ exports.getIndex = (req, res, next) => {
 exports.getProductDetail = (req, res, next) => {
   const prodId = req.params.productId;
   console.log(prodId);
-  Product.findByPk(prodId).then((product) => {
+  // Product.findByPk(prodId).then((product) => {
+  //   console.log(product);
+  //   res.send({
+  //     product: product,
+  //     pageTitle: product.title,
+  //   });
+  // });
+  Product.findAll({where : {id : prodId}}).then(product=>{
     console.log(product);
     res.send({
-      product: product,
+      product: product[0],
       pageTitle: product.title,
-      path: "/products",
     });
-  });
+  })
 };
 
 exports.postCart = (req, res, next) => {
