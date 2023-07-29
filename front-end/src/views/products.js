@@ -32,7 +32,8 @@ const Products = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
+        console.log(data);
+        navigate("/cart")
       })
       .catch((err) => console.log(err));
   };
