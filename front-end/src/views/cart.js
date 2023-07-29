@@ -27,6 +27,18 @@ const Cart = (props) => {
       .catch((err) => console.log(err));
   };
 
+  const orderHandle = () => {
+    fetch(`http://localhost:5000/create-order`, {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        navigate("/order");
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Fragment>
       <div>
@@ -52,6 +64,17 @@ const Cart = (props) => {
           })
         ) : (
           <h1>No Products in Cart!</h1>
+        )}
+        {list.length > 0 && (
+          <div style={{ textAlign: "center" }}>
+            <button
+              onClick={() => {
+                orderHandle();
+              }}
+            >
+              Order now !
+            </button>
+          </div>
         )}
       </div>
     </Fragment>
