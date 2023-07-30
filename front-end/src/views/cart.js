@@ -49,7 +49,7 @@ const Cart = (props) => {
                 <ul>
                   <li>
                     <p>
-                      {item.title} ({item.cartItem.quantity})
+                      {item.title} ({item.quantity})
                     </p>
                     <button
                       className="btn"
