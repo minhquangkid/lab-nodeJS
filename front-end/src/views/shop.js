@@ -26,7 +26,7 @@ const Shop = (props) => {
                   <h1 className="product__title">{items.title}</h1>
                 </header>
                 <div className="card__image">
-                  <img src={items.imageUrl} alt="A Book" />
+                  <img src={items.imageUrl} alt="No image" />
                 </div>
                 <div className="card__content">
                   <h2 className="product__price">${items.price}</h2>

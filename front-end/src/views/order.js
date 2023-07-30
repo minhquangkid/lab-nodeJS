@@ -23,12 +23,12 @@ const Order = (props) => {
         {list.length > 0 ? (
           list.map((item) => {
             return (
-              <li key={item.id}>
-                <h1>#{item.id}</h1>
+              <li key={item._id}>
+                <h1>#{item._id}</h1>
                 <ul>
                   {item.products.map((e) => {
                     return (
-                      <li key={e.id}>
+                      <li key={e._id}>
                         {e.title} ( {e.orderItem.quantity})
                       </li>
                     );

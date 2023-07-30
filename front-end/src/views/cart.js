@@ -53,7 +53,7 @@ const Cart = (props) => {
                     </p>
                     <button
                       className="btn"
-                      onClick={() => handleDelete(item.id)}
+                      onClick={() => handleDelete(item._id)}
                     >
                       Delete
                     </button>

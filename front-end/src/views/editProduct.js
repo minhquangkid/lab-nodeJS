@@ -57,7 +57,7 @@ const EditProduct = (props) => {
             type="text"
             name="id"
             id="id"
-            value={detail.id}
+            value={detail._id}
             style={{ display: "none" }}
           />
         </div>

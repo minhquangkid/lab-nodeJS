@@ -52,7 +52,7 @@ const Admin = (props) => {
                   <button
                     className="btn"
                     onClick={() => {
-                      handleEdit(items.id);
+                      handleEdit(items._id);
                     }}
                   >
                     Edit
@@ -62,7 +62,7 @@ const Admin = (props) => {
                   <button
                     className="btn"
                     onClick={() => {
-                      handleDelete(items.id);
+                      handleDelete(items._id);
                     }}
                   >
                     Delete

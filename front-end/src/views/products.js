@@ -33,7 +33,7 @@ const Products = (props) => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        navigate("/cart")
+        navigate("/cart");
       })
       .catch((err) => console.log(err));
   };
@@ -59,7 +59,7 @@ const Products = (props) => {
                   <button
                     className="btn"
                     onClick={() => {
-                      handleNavigate(items.id);
+                      handleNavigate(items._id);
                     }}
                   >
                     Detail
@@ -69,7 +69,7 @@ const Products = (props) => {
                   <button
                     className="btn"
                     onClick={() => {
-                      addCart(items.id);
+                      addCart(items._id);
                     }}
                   >
                     Add to Cart

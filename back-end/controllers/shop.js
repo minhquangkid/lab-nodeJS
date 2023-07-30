@@ -2,7 +2,7 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll().then((data) => {
+  Product.fetchAll().then((data) => {
     console.log(data);
     res.send({
       prods: data,
@@ -49,7 +49,7 @@ exports.getCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.findAll().then((data) => {
+  Product.fetchAll().then((data) => {
     // truyền vô fetchAll là callback function có tham số là products
     res.send({
       // res.send sẽ trả về cùng lúc cho cả 2 địa chỉ là http://localhost:3000 và http://localhost:5000 nên khi mở localhost:5000 lên vẫn sẽ thấy JSON này
@@ -63,11 +63,10 @@ exports.getProductDetail = (req, res, next) => {
   const prodId = req.params.productId;
   console.log(prodId);
 
-  Product.findAll({ where: { id: prodId } }).then((product) => {
+  Product.findById(prodId).then((product) => {
     console.log(product);
     res.send({
-      product: product[0],
-      pageTitle: product.title,
+      product: product,
     });
   });
 };
