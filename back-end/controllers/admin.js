@@ -61,7 +61,7 @@ exports.editProduct = (req, res, next) => {
 exports.deleteProduct = (req, res, next) => {
   const prodId = req.params.id;
   console.log(prodId);
-  Product.destroy({ where: { id: prodId } });
+  Product.deleteProduct(prodId);
 
   res.status(200).send(true);
 };
