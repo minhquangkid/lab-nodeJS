@@ -53,8 +53,11 @@ exports.editProduct = (req, res, next) => {
 
 exports.deleteProduct = (req, res, next) => {
   const prodId = req.params.id;
-  console.log(prodId);
-  Product.deleteProduct(prodId);
 
-  res.status(200).send(true);
+  Product.findByIdAndRemove(prodId)
+    .then(() => {
+      console.log('DESTROYED PRODUCT');
+      res.status(200).send(true);
+    })
+    .catch(err => console.log(err));
 };
