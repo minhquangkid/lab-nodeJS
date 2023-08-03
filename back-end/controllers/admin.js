@@ -28,13 +28,6 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.editProduct = (req, res, next) => {
-  // console.log(req.body);
-  // console.log(req.body.id);
-  // Product.update(req.body, { where: { id: req.body.id } })
-  //   .then((data) => {
-  //     res.redirect("http://localhost:3000");
-  //   })
-  //   .catch((err) => console.log(err));
 
   const prodId = req.body.id;
   const updatedTitle = req.body.title;
@@ -42,20 +35,20 @@ exports.editProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
 
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDesc,
-    updatedImageUrl,
-    new ObjectId(prodId)
-  );
-  product
-    .save()
-    .then((result) => {
-      console.log("UPDATED PRODUCT!");
+  Product.findById(prodId)
+    .then(product => {
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.description = updatedDesc;
+      product.imageUrl = updatedImageUrl;
+      return product.save();
+    })
+    .then(result => {
+      console.log('UPDATED PRODUCT!');
       res.redirect("http://localhost:3000");
     })
-    .catch((err) => console.log(err));
+    .catch(err => console.log(err));
+
 };
 
 exports.deleteProduct = (req, res, next) => {

@@ -5,7 +5,8 @@ const app = express();
 app.use(cors());
 
 // const sequelize = require('./util/database');
-const mongoConnect = require("./util/database").mongoConnect;
+// const mongoConnect = require("./util/database").mongoConnect;
+const mongoose = require('mongoose');
 
 const Product = require("./models/product");
 const User = require("./models/user");
@@ -31,13 +32,12 @@ app.use(express.urlencoded({ extended: false }));
 // });
 
 app.use((req, res, next) => {
-  User.findById("63f63e57858e8203c4a2ebc6")
-    .then((user) => {
-      req.user = new User(user.name, user.email, user.cart, user._id);
-      // req.user = user;
+  User.findById('64cbb60f5803cce4458b71db')
+    .then(user => {
+      req.user = user;
       next();
     })
-    .catch((err) => console.log(err));
+    .catch(err => console.log(err));
 });
 
 const adminRoutes = require("./routes/admin");
@@ -72,6 +72,25 @@ app.use(shopRoutes);
 //     console.log(err);
 //   });
 
-mongoConnect(() => {
-  app.listen(5000);
-});
+mongoose
+  .connect(
+    'mongodb+srv://minhquang:25031998@cluster0.0tlx60u.mongodb.net/shop2?retryWrites=true'
+  )
+  .then(result => {
+    User.findOne().then(user => {
+      if (!user) {
+        const user = new User({
+          name: 'quang',
+          email: 'minh@gmail.com',
+          cart: {
+            items: []
+          }
+        });
+        user.save();
+      }
+    });
+    app.listen(5000);
+  })
+  .catch(err => {
+    console.log(err);
+  });

@@ -2,12 +2,23 @@ const Product = require("../models/product");
 // const Cart = require("../models/cart");
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll().then((data) => {
-    console.log(data);
-    res.send({
-      prods: data,
+  // Product.fetchAll().then((data) => {
+  //   console.log(data);
+  //   res.send({
+  //     prods: data,
+  //     path: "/products",
+  //   });
+  // });
+  Product.find()
+  .then(products => {
+    console.log(products);
+        res.status(200).send({
+      prods: products,
       path: "/products",
     });
+  })
+  .catch(err => {
+    console.log(err);
   });
 };
 
@@ -59,13 +70,17 @@ exports.getCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll().then((data) => {
-    // truyền vô fetchAll là callback function có tham số là products
-    res.send({
-      // res.send sẽ trả về cùng lúc cho cả 2 địa chỉ là http://localhost:3000 và http://localhost:5000 nên khi mở localhost:5000 lên vẫn sẽ thấy JSON này
-      prods: data,
+
+  Product.find()
+  .then(products => {
+    console.log(products);
+    res.status(200).send({
+      prods: products,
       path: "/",
     });
+  })
+  .catch(err => {
+    console.log(err);
   });
 };
 
