@@ -1,55 +1,46 @@
 const Product = require("../models/product");
-// const Cart = require("../models/cart");
-
+const Order = require("../models/order");
+const User = require("../models/user");
 exports.getProducts = (req, res, next) => {
-  // Product.fetchAll().then((data) => {
-  //   console.log(data);
-  //   res.send({
-  //     prods: data,
-  //     path: "/products",
-  //   });
-  // });
   Product.find()
-  .then(products => {
-    console.log(products);
-        res.status(200).send({
-      prods: products,
-      path: "/products",
+    .then((products) => {
+      console.log(products);
+      res.status(200).send({
+        prods: products,
+        path: "/products",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  })
-  .catch(err => {
-    console.log(err);
-  });
 };
 
 exports.getCarts = (req, res, next) => {
-  // req.user
-  //   .getCart()
-  //   .then((cart) => {
-  //     return cart
-  //       .getProducts()
-  //       .then((products) => {
-  //         res.status(200).send({
-  //           path: "/cart",
-  //           pageTitle: "Your Cart",
-  //           products: products,
-  //         });
-  //       })
-  //       .catch((err) => console.log(err));
-  //   })
-  //   .catch((err) => console.log(err));
-  req.user
-    .getCart()
-    .then((products) => {
-      res.status(200).send({
-        path: "/cart",
-        pageTitle: "Your Cart",
-        products: products,
-      });
-    })
-    .catch((err) => console.log(err));
-};
+  console.log(req.user);
 
+  if (req.user.cart.items[0].productId) {
+    // Create a new query object using User.findById()
+    User.findById(req.user._id)
+      .populate("cart.items.productId") // Chain the populate method
+      .exec() // Execute the query
+      .then((user) => {
+        console.log(user);
+        const products = user.cart.items;
+        res.status(200).send({
+          path: "/cart",
+          pageTitle: "Your Cart",
+          products: products,
+        });
+      })
+      .catch((err) => console.log(err));
+  } else {
+    // Handle the case when req.user is not available or does not have the populate method
+    console.log(
+      "req.user does not exist or does not have the populate method."
+    );
+    res.status(404);
+  }
+};
 exports.getCartDeleteProduct = (req, res, next) => {
   const prodId = req.params.id;
   console.log(prodId);
@@ -70,18 +61,17 @@ exports.getCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-
   Product.find()
-  .then(products => {
-    console.log(products);
-    res.status(200).send({
-      prods: products,
-      path: "/",
+    .then((products) => {
+      console.log(products);
+      res.status(200).send({
+        prods: products,
+        path: "/",
+      });
+    })
+    .catch((err) => {
+      console.log(err);
     });
-  })
-  .catch(err => {
-    console.log(err);
-  });
 };
 
 exports.getProductDetail = (req, res, next) => {
@@ -97,13 +87,13 @@ exports.getProductDetail = (req, res, next) => {
 
   const prodId = req.params.productId;
   Product.findById(prodId)
-    .then(product => {
-       console.log(product);
-        res.send({
-      product: product,
-    });
+    .then((product) => {
+      console.log(product);
+      res.send({
+        product: product,
+      });
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.postCart = (req, res, next) => {
@@ -116,7 +106,6 @@ exports.postCart = (req, res, next) => {
       console.log(result);
       res.status(200).send(true);
     });
-  
 };
 
 exports.getOrders = (req, res, next) => {

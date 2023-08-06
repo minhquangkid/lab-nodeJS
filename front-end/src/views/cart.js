@@ -45,15 +45,15 @@ const Cart = (props) => {
         {list.length > 0 ? (
           list.map((item) => {
             return (
-              <div key={item.price}>
+              <div key={item.productId.price}>
                 <ul>
                   <li>
                     <p>
-                      {item.title} ({item.quantity})
+                      {item.productId.title} ({item.quantity})
                     </p>
                     <button
                       className="btn"
-                      onClick={() => handleDelete(item._id)}
+                      onClick={() => handleDelete(item.productId._id)}
                     >
                       Delete
                     </button>
