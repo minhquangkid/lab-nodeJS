@@ -109,8 +109,14 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user
-    .getOrders({ include: ["products"] })
+  // req.user
+  //   .getOrders({ include: ["products"] })
+  //   .then((orders) => {
+  //     res.status(200).send(orders);
+  //   })
+  //   .catch((err) => console.log(err));
+
+  Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.status(200).send(orders);
     })
@@ -118,31 +124,37 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  let fetchedCart;
-  req.user
-    .getCart()
-    .then((cart) => {
-      fetchedCart = cart;
-      return cart.getProducts();
-    })
-    .then((products) => {
-      return req.user
-        .createOrder()
-        .then((order) => {
-          return order.addProducts(
-            products.map((product) => {
-              product.orderItem = { quantity: product.cartItem.quantity };
-              return product;
-            })
-          );
-        })
-        .catch((err) => console.log(err));
+  console.log(req.user);
+
+  User.findById(req.user._id)
+    .populate("cart.items.productId")
+    .exec()
+    .then((user) => {
+      const products = user.cart.items.map((i) => {
+        return { quantity: i.quantity, product: { ...i.productId._doc } };
+      });
+      const order = new Order({
+        user: {
+          name: req.user.name,
+          userId: req.user,
+        },
+        products: products,
+      });
+      return order.save();
     })
     .then((result) => {
-      return fetchedCart.setProducts(null);
+      return req.user.clearCart();
     })
-    .then((result) => {
+    .then(() => {
       res.status(200).send(true);
     })
     .catch((err) => console.log(err));
+
+  /*
+  The spread operator (...) is used to create a new object that includes all the properties from i.productId._doc.
+
+  In Mongoose (the MongoDB object modeling library for Node.js), when you use .populate(), the populated document is stored in the _doc property of the Mongoose document.
+
+  So, i.productId._doc represents the populated product document for the current cart item. The spread operator here is used to create a new object with all the properties of the populated product document.
+      */
 };

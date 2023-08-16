@@ -28,8 +28,8 @@ const Order = (props) => {
                 <ul>
                   {item.products.map((e) => {
                     return (
-                      <li key={e._id}>
-                        {e.title} ( {e.orderItem.quantity})
+                      <li key={e.product._id}>
+                        {e.product.title} ( {e.quantity})
                       </li>
                     );
                   })}
