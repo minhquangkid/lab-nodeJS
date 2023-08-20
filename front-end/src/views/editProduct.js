@@ -7,6 +7,7 @@ const EditProduct = (props) => {
   const [detail, setDetail] = useState([]);
   const params = useParams();
 
+
   useEffect(() => {
     fetch(`http://localhost:5000/products/${params.id}`)
       .then((res) => res.json())

@@ -51,6 +51,18 @@ const Navbar = (props) => {
               Admin
             </a>
           </li>
+          <li className="main-header__item">
+                <a className={props.receive === "/login" ? "active" : ""} href="/login">Login</a>
+            </li>
+            <li className="main-header__item">
+                <a className={props.receive === "/signup" ? "active" : ""} href="/signup">Signup</a>
+            </li>
+            <li className="main-header__item">
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
         </ul>
       </nav>
     </header>
