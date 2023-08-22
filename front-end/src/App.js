@@ -11,6 +11,7 @@ import Cart from "./views/cart";
 import NotFound from "./views/notFound";
 import Order from "./views/order";
 import SignUp from "./views/signup";
+import Login from "./views/login";
 
 function App() {
   const [link, setLink] = useState(""); // dùng để kích hoạt thuộc tính active trong thanh navbar
@@ -32,6 +33,7 @@ function App() {
         <Route path="/cart" element={<Cart url={getUrl} />} />
         <Route path="/order" element={<Order url={getUrl}/>} />
         <Route path="/signup" element={<SignUp url={getUrl}/>} />
+        <Route path="/login" element={<Login url={getUrl}/>} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </Fragment>

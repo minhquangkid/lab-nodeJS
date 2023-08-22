@@ -36,26 +36,25 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
-        req.flash('error', 'Invalid email or password.');
-        return res.redirect('/login');
+        return res.status(400).send({
+          message: "Invalid email",
+        });
       }
       bcrypt
         .compare(password, user.password)
         .then(doMatch => {
           if (doMatch) {
-            req.session.isLoggedIn = true;
-            req.session.user = user;
-            return req.session.save(err => {
-              console.log(err);
-              res.redirect('/');
-            });
+            // req.session.isLoggedIn = true;
+            // req.session.user = user;
+            return res.status(200).send(true);
           }
-          req.flash('error', 'Invalid email or password.');
-          res.redirect('/login');
+          return res.status(400).send({
+            message: "Invalid password",
+          });
         })
         .catch(err => {
           console.log(err);
-          res.redirect('/login');
+          
         });
     })
     .catch(err => console.log(err));

@@ -3,14 +3,13 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/product.css";
 import "../CSS/forms.css";
 import "../CSS/main.css"
-const SignUp = (props) => {
+const Login = (props) => {
   const [message, setMessage] = useState("");
   const [isInVaild , setIsInVaild] = useState(false);
   const navigate = useNavigate();
 
   const emailRef = useRef(null);
   const pass = useRef(null);
-  const confirmPass = useRef(null);
 
   const isValidEmail = (email) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -18,7 +17,7 @@ const SignUp = (props) => {
   };
 
   useEffect(()=>{
-    props.url("/signup");
+    props.url("/login");
   },[])
 
   const submit = (event) => {
@@ -27,7 +26,6 @@ const SignUp = (props) => {
 
     console.log(emailRef.current.value);
     console.log(pass.current.value);
-    console.log(confirmPass.current.value);
 
     if(emailRef.current.value == ""){
       setIsInVaild(true);
@@ -41,19 +39,13 @@ const SignUp = (props) => {
       return
     }
 
-    if(pass.current.value !== confirmPass.current.value){
-      setIsInVaild(true);
-      setMessage("Password doesn't match")
-      return
-    }
-
     if(!isValidEmail(emailRef.current.value)){
       setIsInVaild(true);
       setMessage("Invalid Email")
       return
     }
 
-    fetch(`http://localhost:5000/signup`, {
+    fetch(`http://localhost:5000/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +58,7 @@ const SignUp = (props) => {
 
         if(data === true){
 
-          navigate("/login");
+          navigate("/");
         } else {
           setIsInVaild(true);
           setMessage(data.message);
@@ -100,14 +92,10 @@ const SignUp = (props) => {
                 <label htmlFor="password">Password</label>
                 <input type="password" name="password" id="password" ref={pass}/>
             </div>
-            <div className="form-control">
-                <label htmlFor="confirmPassword">Confirm Password</label>
-                <input type="password" name="confirmPassword" id="confirmPassword" ref={confirmPass}/>
-            </div>
-            <button className="btn" type="click" onClick={()=> {submit()}}>Signup</button>
+            <button className="btn" type="click" onClick={()=> {submit()}}>Login</button>
         </div>
     </Fragment>
   );
 };
 
-export default SignUp;
+export default Login;
