@@ -1,12 +1,14 @@
 import { Fragment, useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "../CSS/product.css";
 import "../CSS/forms.css";
 import "../CSS/main.css"
 const SignUp = (props) => {
   const [message, setMessage] = useState("");
   const [isInVaild , setIsInVaild] = useState(false);
+  const navigate = useNavigate();
 
-  const email = useRef(null);
+  const emailRef = useRef(null);
   const pass = useRef(null);
   const confirmPass = useRef(null);
 
@@ -19,29 +21,69 @@ const SignUp = (props) => {
 
     setIsInVaild(false);
 
-    console.log(email.current.value);
+    console.log(emailRef.current.value);
     console.log(pass.current.value);
     console.log(confirmPass.current.value);
 
-    if(email.current.value == ""){
+    if(emailRef.current.value == ""){
       setIsInVaild(true);
       setMessage("Missing email")
+      return
     }
 
     if(pass.current.value == ""){
       setIsInVaild(true);
       setMessage("Missing password")
+      return
     }
 
     if(pass.current.value !== confirmPass.current.value){
       setIsInVaild(true);
       setMessage("Password doesn't match")
+      return
     }
 
-    if(!isValidEmail(email.current.value)){
+    if(!isValidEmail(emailRef.current.value)){
       setIsInVaild(true);
       setMessage("Invalid Email")
+      return
     }
+
+    fetch(`http://localhost:5000/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: emailRef.current.value , password : pass.current.value}),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+
+        if(data === true){
+
+          navigate("/login");
+        } else {
+          setIsInVaild(true);
+          setMessage(data.message);
+        }
+      })
+      .catch((error) => {
+        // Error occurred during the API call, try catch cũng dùng giống vậy
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+
+        // if (error.response.data === "Incorrect password!") {
+
+        // } else if (error.response.data === "Incorrect email!") {
+
+        // } else {
+        //   alert(error.response.data.message);
+        // }
+        // console.log(error);
+        return;
+      });
 
   }
 
@@ -56,7 +98,7 @@ const SignUp = (props) => {
         <div className="login-form">
             <div className="form-control">
                 <label htmlFor="email">E-Mail</label>
-                <input type="email" name="email" id="email" ref={email}/>
+                <input type="email" name="email" id="email" ref={emailRef}/>
             </div>
             <div className="form-control">
                 <label htmlFor="password">Password</label>
@@ -66,7 +108,6 @@ const SignUp = (props) => {
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <input type="password" name="confirmPassword" id="confirmPassword" ref={confirmPass}/>
             </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
             <button className="btn" type="click" onClick={()=> {submit()}}>Signup</button>
         </div>
     </Fragment>

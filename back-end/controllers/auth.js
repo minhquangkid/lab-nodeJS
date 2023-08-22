@@ -64,12 +64,14 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
+
   User.findOne({ email: email })
     .then(userDoc => {
       if (userDoc) {
-        req.flash('error', 'E-Mail exists already, please pick a different one.');
-        return res.redirect('/signup');
+
+        return res.status(400).send({
+          message: "E-Mail exists already, please pick a different one.",
+        });
       }
       return bcrypt
         .hash(password, 12)
@@ -82,7 +84,7 @@ exports.postSignup = (req, res, next) => {
           return user.save();
         })
         .then(result => {
-          res.redirect('/login');
+          res.status(200).send(true);
         });
     })
     .catch(err => {

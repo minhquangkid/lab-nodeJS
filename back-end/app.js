@@ -5,16 +5,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const csrf = require('csurf');
-const flash = require('connect-flash');
+// const csrf = require('csurf');
+
 
 
 const cors = require("cors"); // dùng cái này mới có thể liên kết FE ở localhost:3000 và BE ở localhost:5000 được
 const app = express();
 app.use(cors());
 
-
-const mongoose = require('mongoose');
 
 const Product = require("./models/product");
 const User = require("./models/user");
@@ -37,19 +35,20 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
 });
-const csrfProtection = csrf();
+//const csrfProtection = csrf();
 
-app.use((req, res, next) => {
-  User.findById('64cbb60f5803cce4458b71db')
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
-});
+// app.use((req, res, next) => {
+//   User.findById('64cbb60f5803cce4458b71db')
+//     .then(user => {
+//       req.user = user;
+//       next();
+//     })
+//     .catch(err => console.log(err));
+// });
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth")
 
 //app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -71,26 +70,28 @@ app.use(
     store: store
   })
 );
-app.use(csrfProtection);
-app.use(flash());
+// app.use(csrfProtection);
+
 
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
   }
   User.findById(req.session.user._id)
-    .then(user => {
+    .then((user) => {
       req.user = user;
       next();
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 });
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;
-  res.locals.csrfToken = req.csrfToken();
+  // res.locals.csrfToken = req.csrfToken();
   next();
 });
+
+
 
 
 
