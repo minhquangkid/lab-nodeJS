@@ -1,34 +1,16 @@
 const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
+const nodemailer = require('nodemailer');
 
-exports.getLogin = (req, res, next) => {
-  let message = req.flash('error');
-  if (message.length > 0) {
-    message = message[0];
-  } else {
-    message = null;
-  }
-  res.render('auth/login', {
-    path: '/login',
-    pageTitle: 'Login',
-    errorMessage: message
-  });
-};
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "minhquangsendemail@gmail.com",
+    pass: "ejqneshbbjjonjan",
+  },
+});
 
-exports.getSignup = (req, res, next) => {
-  let message = req.flash('error');
-  if (message.length > 0) {
-    message = message[0];
-  } else {
-    message = null;
-  }
-  res.render('auth/signup', {
-    path: '/signup',
-    pageTitle: 'Signup',
-    errorMessage: message
-  });
-};
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
@@ -46,6 +28,26 @@ exports.postLogin = (req, res, next) => {
           if (doMatch) {
             // req.session.isLoggedIn = true;
             // req.session.user = user;
+
+           var content = `
+            <h1>Bạn đã đăng nhập thành công</h1>`;
+
+            transporter.sendMail(
+              {
+                to: email,
+                from: "minhquangsendemail@gmail.com",
+                subject: "Login succeeded!",
+                html: content,
+              },
+              function (err, inf) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  console.log("Email sent: " + inf.response);
+                }
+              }
+            );
+
             return res.status(200).send(true);
           }
           return res.status(400).send({
