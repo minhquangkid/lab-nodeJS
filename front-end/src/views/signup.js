@@ -41,6 +41,12 @@ const SignUp = (props) => {
       return
     }
 
+    if(pass.current.value.length < 8){
+      setIsInVaild(true);
+      setMessage("Password must be more than 8 character")
+      return
+    }
+
     if(pass.current.value !== confirmPass.current.value){
       setIsInVaild(true);
       setMessage("Password doesn't match")
