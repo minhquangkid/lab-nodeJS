@@ -20,7 +20,7 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
-    userId: req.user,
+    userId: req.user,,
   });
   product
     .save()
@@ -42,7 +42,7 @@ exports.editProduct = (req, res, next) => {
   const updatedDesc = req.body.description;
 
   Product.findById(prodId)
-    .then((product) => {
+    .then(((product)) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDesc;
@@ -64,5 +64,5 @@ exports.deleteProduct = (req, res, next) => {
       console.log("DESTROYED PRODUCT");
       res.status(200).send(true);
     })
-    .catch((err) => console.log(err));
+    .catch(((err)) => console.log(err));
 };
