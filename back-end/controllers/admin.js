@@ -10,7 +10,6 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = (req, res, next) => {
-
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
@@ -20,7 +19,7 @@ exports.postAddProduct = (req, res, next) => {
     price: price,
     description: description,
     imageUrl: imageUrl,
-    userId: req.user
+    userId: req.user,
   });
   product
     .save()
@@ -30,11 +29,11 @@ exports.postAddProduct = (req, res, next) => {
       res.redirect("http://localhost:3000");
     })
     .catch((err) => {
-      console.log(err)})
+      console.log(err);
+    });
 };
 
 exports.editProduct = (req, res, next) => {
-
   const prodId = req.body.id;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
@@ -42,19 +41,18 @@ exports.editProduct = (req, res, next) => {
   const updatedDesc = req.body.description;
 
   Product.findById(prodId)
-    .then(product => {
+    .then((product) => {
       product.title = updatedTitle;
       product.price = updatedPrice;
       product.description = updatedDesc;
       product.imageUrl = updatedImageUrl;
       return product.save();
     })
-    .then(result => {
-      console.log('UPDATED PRODUCT!');
+    .then((result) => {
+      console.log("UPDATED PRODUCT!");
       res.redirect("http://localhost:3000");
     })
-    .catch(err => console.log(err));
-
+    .catch((err) => console.log(err));
 };
 
 exports.deleteProduct = (req, res, next) => {
@@ -62,8 +60,8 @@ exports.deleteProduct = (req, res, next) => {
 
   Product.findByIdAndRemove(prodId)
     .then(() => {
-      console.log('DESTROYED PRODUCT');
+      console.log("DESTROYED PRODUCT");
       res.status(200).send(true);
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };

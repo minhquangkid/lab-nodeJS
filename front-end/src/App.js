@@ -1,5 +1,6 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./views/navbar";
 import Shop from "./views/shop";
 import AddProduct from "./views/addProduct";
@@ -15,6 +16,19 @@ import Login from "./views/login";
 
 function App() {
   const [link, setLink] = useState(""); // dùng để kích hoạt thuộc tính active trong thanh navbar
+  const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let currentUser = localStorage.getItem("userInf");
+
+    if (currentUser) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+      navigate(`/login`);
+    }
+  }, []);
 
   const getUrl = (e) => {
     setLink(e);
@@ -22,19 +36,29 @@ function App() {
 
   return (
     <Fragment>
-      <Navbar receive={link} />
+      <Navbar receive={link} isLogin={isLogin} />
       <Routes>
-        <Route path="/" element={<Shop url={getUrl} />} />
-        <Route path="/products" element={<Products url={getUrl} />} />
-        <Route path="/products/:id" element={<ProductDetail url={getUrl} />} />
-        <Route path="/add-product" element={<AddProduct url={getUrl} />} />
-        <Route path="/edit-product/:id" element={<EditProduct />} />
-        <Route path="/admin" element={<Admin url={getUrl} />} />
-        <Route path="/cart" element={<Cart url={getUrl} />} />
-        <Route path="/order" element={<Order url={getUrl}/>} />
-        <Route path="/signup" element={<SignUp url={getUrl}/>} />
-        <Route path="/login" element={<Login url={getUrl}/>} />
-        <Route path="*" element={<NotFound/>} />
+        {isLogin ? (
+          <Fragment>
+            <Route path="/" element={<Shop url={getUrl} />} />
+            <Route path="/products" element={<Products url={getUrl} />} />
+            <Route
+              path="/products/:id"
+              element={<ProductDetail url={getUrl} />}
+            />
+            <Route path="/add-product" element={<AddProduct url={getUrl} />} />
+            <Route path="/edit-product/:id" element={<EditProduct />} />
+            <Route path="/admin" element={<Admin url={getUrl} />} />
+            <Route path="/cart" element={<Cart url={getUrl} />} />
+            <Route path="/order" element={<Order url={getUrl} />} />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Route path="/signup" element={<SignUp url={getUrl} />} />
+            <Route path="/login" element={<Login url={getUrl} />} />
+          </Fragment>
+        )}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Fragment>
   );
