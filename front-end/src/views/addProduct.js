@@ -8,6 +8,8 @@ const AddProduct = (props) => {
   const priceRef = useRef(null);
   const desRef = useRef(null);
 
+  const user = JSON.parse(localStorage.getItem("userInf"));
+
   useEffect(() => {
     fetch("http://localhost:5000/add-product")
       .then((res) => res.json())
@@ -59,14 +61,14 @@ const AddProduct = (props) => {
           imageUrl: imageRef.current.value,
           price: priceRef.current.value,
           description: desRef.current.value,
+          email: user.email,
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-
-        props.url(data.path);
+        window.location.replace("/");
       } else {
         console.error("Failed to add product");
       }
