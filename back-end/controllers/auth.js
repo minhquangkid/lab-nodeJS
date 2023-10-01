@@ -1,7 +1,7 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
-const User = require('../models/user');
-const nodemailer = require('nodemailer');
+const User = require("../models/user");
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -11,12 +11,11 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   User.findOne({ email: email })
-    .then(user => {
+    .then((user) => {
       if (!user) {
         return res.status(400).send({
           message: "Invalid email",
@@ -24,12 +23,12 @@ exports.postLogin = (req, res, next) => {
       }
       bcrypt
         .compare(password, user.password)
-        .then(doMatch => {
+        .then((doMatch) => {
           if (doMatch) {
             // req.session.isLoggedIn = true;
             // req.session.user = user;
 
-           var content = `
+            var content = `
             <h1>Bạn đã đăng nhập thành công</h1>`;
 
             transporter.sendMail(
@@ -54,12 +53,11 @@ exports.postLogin = (req, res, next) => {
             message: "Invalid password",
           });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
-          
         });
     })
-    .catch(err => console.log(err));
+    .catch((err) => console.log(err));
 };
 
 exports.postSignup = (req, res, next) => {
@@ -67,35 +65,34 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
 
   User.findOne({ email: email })
-    .then(userDoc => {
+    .then((userDoc) => {
       if (userDoc) {
-
         return res.status(400).send({
           message: "E-Mail exists already, please pick a different one.",
         });
       }
       return bcrypt
         .hash(password, 12)
-        .then(hashedPassword => {
+        .then((hashedPassword) => {
           const user = new User({
             email: email,
             password: hashedPassword,
-            cart: { items: [] }
+            cart: { items: [] },
           });
           return user.save();
         })
-        .then(result => {
+        .then((result) => {
           res.status(200).send(true);
         });
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
     });
 };
 
 exports.postLogout = (req, res, next) => {
-  req.session.destroy(err => {
+  req.session.destroy((err) => {
     console.log(err);
-    res.redirect('/');
+    res.redirect("/");
   });
 };
