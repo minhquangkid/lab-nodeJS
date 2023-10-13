@@ -1,4 +1,6 @@
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 const nodemailer = require("nodemailer");
@@ -10,6 +12,14 @@ const transporter = nodemailer.createTransport({
     pass: "ejqneshbbjjonjan",
   },
 });
+
+exports.getLogin = (req, res, next) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
+  }
+};
 
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
@@ -28,25 +38,30 @@ exports.postLogin = (req, res, next) => {
             // req.session.isLoggedIn = true;
             // req.session.user = user;
 
-            var content = `
-            <h1>Bạn đã đăng nhập thành công</h1>`;
+            // var content = `
+            // <h1>Bạn đã đăng nhập thành công</h1>`;
 
-            transporter.sendMail(
-              {
-                to: email,
-                from: "minhquangsendemail@gmail.com",
-                subject: "Login succeeded!",
-                html: content,
-              },
-              function (err, inf) {
-                if (err) {
-                  console.log(err);
-                } else {
-                  console.log("Email sent: " + inf.response);
-                }
-              }
-            );
+            // transporter.sendMail(
+            //   {
+            //     to: email,
+            //     from: "minhquangsendemail@gmail.com",
+            //     subject: "Login succeeded!",
+            //     html: content,
+            //   },
+            //   function (err, inf) {
+            //     if (err) {
+            //       console.log(err);
+            //     } else {
+            //       console.log("Email sent: " + inf.response);
+            //     }
+            //   }
+            // );
+            //
 
+            req.session.user = user;
+
+            console.log(req.session.user);
+            //
             return res.status(200).send(true);
           }
           return res.status(400).send({
@@ -82,6 +97,25 @@ exports.postSignup = (req, res, next) => {
           return user.save();
         })
         .then((result) => {
+          var content = `
+          <h1>Bạn đã tạo tài khoản thành công</h1>`;
+
+          transporter.sendMail(
+            {
+              to: email,
+              from: "minhquangsendemail@gmail.com",
+              subject: "Sign up succeeded!",
+              html: content,
+            },
+            function (err, inf) {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log("Email sent: " + inf.response);
+              }
+            }
+          );
+
           res.status(200).send(true);
         });
     })

@@ -6,6 +6,8 @@ import "../CSS/main.css";
 const Login = (props) => {
   const [message, setMessage] = useState("");
   const [isInVaild, setIsInVaild] = useState(false);
+  const [loginStatus, setLoginStatus] = useState("");
+
   const navigate = useNavigate();
 
   const emailRef = useRef(null);
@@ -18,6 +20,23 @@ const Login = (props) => {
 
   useEffect(() => {
     props.url("/login");
+
+    fetch(`http://localhost:5000/login`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.loggedIn) {
+          setLoginStatus(data.user);
+        } else {
+          setLoginStatus(data.loggedIn);
+        }
+      });
   }, []);
 
   const submit = (event) => {
@@ -53,6 +72,7 @@ const Login = (props) => {
         email: emailRef.current.value,
         password: pass.current.value,
       }),
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
