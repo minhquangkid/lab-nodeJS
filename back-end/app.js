@@ -44,13 +44,13 @@ app.use(cookieParser());
 app.use(
   session({
     key: "userId",
-    secret: "123456",
+    secret: "123456", // thông thường sẽ dùng kết hợp với JWT
     resave: false,
     saveUninitialized: false,
     cookie: {
       expires: 20000, // thời gian hết hạn là 1 tiếng
       //maxAge: 10000, // set là 10 giây hết hạn, đây là mili giây, dùng maxAge hoặc expires đều được
-      httpOnly: false, // nếu muốn lấy được value của cookie userId thì phải có cái này
+      httpOnly: false, // nếu muốn lấy được value của cookie userId thì phải có cái này, vì ban đầu nó bảo mật httpOnly = true
     },
     store: store,
   })
