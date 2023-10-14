@@ -25,22 +25,26 @@ const Login = (props) => {
     let userId = Cookies.get("userId");
     console.log(userId);
 
-    fetch(`http://localhost:5000/login`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.loggedIn) {
-          setLoginStatus(data.user);
-        } else {
-          setLoginStatus(data.loggedIn);
-        }
-      });
+    if (userId != undefined) {
+      window.location.replace("/");
+    }
+
+    // fetch(`http://localhost:5000/login`, {
+    //   method: "GET",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   credentials: "include",
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //     if (data.loggedIn) {
+    //       setLoginStatus(data.user);
+    //     } else {
+    //       setLoginStatus(data.loggedIn);
+    //     }
+    //   });
   }, []);
 
   const submit = (event) => {
@@ -82,19 +86,19 @@ const Login = (props) => {
       .then((data) => {
         console.log(data);
 
-        // if (data === true) {
-        //   localStorage.setItem(
-        //     "userInf",
-        //     JSON.stringify({
-        //       email: emailRef.current.value,
-        //       password: pass.current.value,
-        //     })
-        //   );
-        //   window.location.replace("/");
-        // } else {
-        //   setIsInVaild(true);
-        //   setMessage(data.message);
-        // }
+        if (data === true) {
+          localStorage.setItem(
+            "userInf",
+            JSON.stringify({
+              email: emailRef.current.value,
+              password: pass.current.value,
+            })
+          );
+          window.location.replace("/");
+        } else {
+          setIsInVaild(true);
+          setMessage(data.message);
+        }
       })
       .catch((error) => {
         // Error occurred during the API call, try catch cũng dùng giống vậy

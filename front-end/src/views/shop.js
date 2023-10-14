@@ -18,9 +18,9 @@ const Shop = (props) => {
   return (
     <Fragment>
       <div className="grid">
-        {list.map((items) => {
+        {list.map((items, index) => {
           return (
-            <div key={items.price}>
+            <div key={index}>
               <article className="card product-item">
                 <header className="card__header">
                   <h1 className="product__title">{items.title}</h1>

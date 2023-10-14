@@ -124,9 +124,17 @@ exports.postSignup = (req, res, next) => {
     });
 };
 
-exports.postLogout = (req, res, next) => {
+exports.getLogout = (req, res, next) => {
+  // res.cookie("userId", "", { maxAge: 0 });
+
+  // res.send(true);
+  res.clearCookie("userId"); // phải clear cookie bên front-end nữa
+  /*
+ document.cookie =
+          "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  */
   req.session.destroy((err) => {
     console.log(err);
-    res.redirect("/");
+    res.status(200).send(true);
   });
 };

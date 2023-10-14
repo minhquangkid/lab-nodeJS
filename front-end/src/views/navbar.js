@@ -5,8 +5,21 @@ import "../CSS/main.css";
 
 const Navbar = (props) => {
   const logoutHandle = () => {
-    localStorage.removeItem("userInf");
-    window.location.replace("/");
+    // localStorage.removeItem("userInf");
+
+    fetch(`http://localhost:5000/logout`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        document.cookie =
+          "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        console.log(data);
+        window.location.replace("/");
+      });
   };
 
   return (

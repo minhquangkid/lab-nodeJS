@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import Navbar from "./views/navbar";
 import Shop from "./views/shop";
 import AddProduct from "./views/addProduct";
@@ -18,11 +19,20 @@ function App() {
   const [link, setLink] = useState(""); // dùng để kích hoạt thuộc tính active trong thanh navbar
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
+  let userId = Cookies.get("userId");
 
   useEffect(() => {
-    let currentUser = localStorage.getItem("userInf");
+    // let currentUser = localStorage.getItem("userInf");
 
-    if (currentUser) {
+    // if (currentUser) {
+    //   setIsLogin(true);
+    // } else {
+    //   setIsLogin(false);
+    //   navigate(`/login`);
+    // }
+
+    console.log(userId);
+    if (userId != undefined) {
       setIsLogin(true);
     } else {
       setIsLogin(false);
