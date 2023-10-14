@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import "../CSS/product.css";
 import "../CSS/forms.css";
 import "../CSS/main.css";
@@ -20,6 +21,9 @@ const Login = (props) => {
 
   useEffect(() => {
     props.url("/login");
+
+    let userId = Cookies.get("userId");
+    console.log(userId);
 
     fetch(`http://localhost:5000/login`, {
       method: "GET",
@@ -78,19 +82,19 @@ const Login = (props) => {
       .then((data) => {
         console.log(data);
 
-        if (data === true) {
-          localStorage.setItem(
-            "userInf",
-            JSON.stringify({
-              email: emailRef.current.value,
-              password: pass.current.value,
-            })
-          );
-          window.location.replace("/");
-        } else {
-          setIsInVaild(true);
-          setMessage(data.message);
-        }
+        // if (data === true) {
+        //   localStorage.setItem(
+        //     "userInf",
+        //     JSON.stringify({
+        //       email: emailRef.current.value,
+        //       password: pass.current.value,
+        //     })
+        //   );
+        //   window.location.replace("/");
+        // } else {
+        //   setIsInVaild(true);
+        //   setMessage(data.message);
+        // }
       })
       .catch((error) => {
         // Error occurred during the API call, try catch cũng dùng giống vậy

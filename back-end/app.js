@@ -44,12 +44,13 @@ app.use(cookieParser());
 app.use(
   session({
     key: "userId",
-    secret: "my secret",
+    secret: "123456",
     resave: false,
     saveUninitialized: false,
     cookie: {
-      expires: 60000 * 60 * 24, // thời gian hết hạn là 1 ngày
+      expires: 20000, // thời gian hết hạn là 1 tiếng
       //maxAge: 10000, // set là 10 giây hết hạn, đây là mili giây, dùng maxAge hoặc expires đều được
+      httpOnly: false, // nếu muốn lấy được value của cookie userId thì phải có cái này
     },
     store: store,
   })
