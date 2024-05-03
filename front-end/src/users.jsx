@@ -1,7 +1,29 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Users = () => {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000")
+      .then((e) => {
+        console.log(e);
+        return e.json();
+      })
+      .then((result) => {
+        console.log(result);
+        setList(result);
+      });
+  }, []);
+
+  const renderList = (
+    <ul>
+      {list.map((e) => {
+        return <li key={e}>{e}</li>;
+      })}
+    </ul>
+  );
+
   return (
     <Fragment>
       <div style={{ margin: "20px" }}>
@@ -15,10 +37,7 @@ const Users = () => {
           </span>
         </div>
         <h1>Users</h1>
-        <h2>No Users Found</h2>
-        {/* <ul>
-        
-       </ul> */}
+        {list.length > 0 ? renderList : <h2>No Users Found</h2>}
       </div>
     </Fragment>
   );
