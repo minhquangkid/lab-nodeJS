@@ -1,14 +1,14 @@
 import { Fragment, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import AddUser from "./add-user";
-import Users from "./users";
+import Shop from "./components/shop";
+import AddProduct from "./components/add-product";
 
 function App() {
   return (
     <Fragment>
       <Routes>
-        <Route path="/" element={<AddUser />} />
-        <Route path="/users" element={<Users />} />
+        <Route path="/" element={<Shop />} />
+        <Route path="/admin/add-product" element={<AddProduct />} />
       </Routes>
     </Fragment>
   );
