@@ -4,7 +4,7 @@ import "../CSS/main.css";
 function Navigation() {
   let location = useLocation();
 
-  console.log(location);
+  //   console.log(location);
   return (
     <header className="main-header">
       <nav className="main-header__nav">
