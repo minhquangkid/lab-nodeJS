@@ -5,25 +5,27 @@ import "../CSS/forms.css";
 const AddProduct = (props) => {
   const [list, setList] = useState([]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:5000")
-  //     .then((e) => {
-  //       console.log(e);
-  //       return e.json();
+  // const sendData = () => {
+  //   console.log(user);
+  //   fetch("http://localhost:5000/add-user", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-type": "application/json",
+  //     },
+  //     body: JSON.stringify({ user: user }),
+  //   })
+  //     .then((r) => {
+  //       console.log(r);
+  //       return r.json();
   //     })
   //     .then((result) => {
   //       console.log(result);
-  //       setList(result);
   //     });
-  // }, []);
+  // };
 
-  // const renderList = (
-  //   <ul>
-  //     {list.map((e) => {
-  //       return <li key={e}>{e}</li>;
-  //     })}
-  //   </ul>
-  // );
+  // const changeHandle = (e) => {
+  //   setUser(e.target.value);
+  // };
 
   return (
     <Fragment>

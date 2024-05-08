@@ -1,42 +1,32 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navigation from "./navigate";
 import "../CSS/product.css";
 
 const Shop = (props) => {
-  const [user, setUser] = useState("");
+  const [prods, setProds] = useState([]);
 
-  // const sendData = () => {
-  //   console.log(user);
-  //   fetch("http://localhost:5000/add-user", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-type": "application/json",
-  //     },
-  //     body: JSON.stringify({ user: user }),
-  //   })
-  //     .then((r) => {
-  //       console.log(r);
-  //       return r.json();
-  //     })
-  //     .then((result) => {
-  //       console.log(result);
-  //     });
-  // };
+  useEffect(() => {
+    fetch("http://localhost:5000")
+      .then((e) => {
+        console.log(e);
+        return e.json();
+      })
+      .then((result) => {
+        console.log(result);
+        setProds(result);
+      });
+  }, []);
 
-  // const changeHandle = (e) => {
-  //   setUser(e.target.value);
-  // };
-
-  const prods = [
-    {
-      title: "A Book",
-      imageUrl:
-        "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
-      description: "This is an awesome book!",
-      price: "19",
-    },
-  ];
+  // const prods = [
+  //   {
+  //     title: "A Book",
+  //     imageUrl:
+  //       "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+  //     description: "This is an awesome book!",
+  //     price: "19",
+  //   },
+  // ];
 
   return (
     <Fragment>
