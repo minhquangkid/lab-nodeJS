@@ -15,6 +15,21 @@ const Shop = (props) => {
       .catch((err) => console.log(err));
   }, []);
 
+  const addCart = (id) => {
+    fetch(`http://localhost:5000/cart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Fragment>
       <div className="grid">
@@ -33,7 +48,14 @@ const Shop = (props) => {
                   <p className="product__description">{items.description}</p>
                 </div>
                 <div className="card__actions">
-                  <button className="btn">Add to Cart</button>
+                  <button
+                    className="btn"
+                    onClick={() => {
+                      addCart(items.id);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </article>
             </div>
