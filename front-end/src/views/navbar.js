@@ -17,7 +17,7 @@ const Navbar = (props) => {
       .then((data) => {
         document.cookie =
           "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        console.log(data);
+        //console.log(data);
         window.location.replace("/");
       });
   };

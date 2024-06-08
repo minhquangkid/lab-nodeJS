@@ -35,38 +35,25 @@ exports.postLogin = (req, res, next) => {
         .compare(password, user.password)
         .then((doMatch) => {
           if (doMatch) {
-            // req.session.isLoggedIn = true;
-            // req.session.user = user;
+            req.session.save((err) => {
+              if (err) {
+                console.log(err);
+                return res.status(500).send({
+                  message: "Session save error",
+                });
+              }
+              req.session.user = user;
+              req.session.isLoggedIn = true;
 
-            // var content = `
-            // <h1>Bạn đã đăng nhập thành công</h1>`;
+              res.cookie();
 
-            // transporter.sendMail(
-            //   {
-            //     to: email,
-            //     from: "minhquangsendemail@gmail.com",
-            //     subject: "Login succeeded!",
-            //     html: content,
-            //   },
-            //   function (err, inf) {
-            //     if (err) {
-            //       console.log(err);
-            //     } else {
-            //       console.log("Email sent: " + inf.response);
-            //     }
-            //   }
-            // );
-            //
-
-            req.session.user = user;
-
-            console.log(req.session.user);
-            //
-            return res.status(200).send(true);
+              return res.status(200).send(true);
+            });
+          } else {
+            return res.status(400).send({
+              message: "Invalid password",
+            });
           }
-          return res.status(400).send({
-            message: "Invalid password",
-          });
         })
         .catch((err) => {
           console.log(err);
@@ -111,7 +98,7 @@ exports.postSignup = (req, res, next) => {
               if (err) {
                 console.log(err);
               } else {
-                console.log("Email sent: " + inf.response);
+                //console.log("Email sent: " + inf.response);
               }
             }
           );

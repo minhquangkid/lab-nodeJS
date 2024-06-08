@@ -31,7 +31,7 @@ function App() {
     //   navigate(`/login`);
     // }
 
-    console.log(userId);
+    //console.log(userId);
     if (userId != undefined) {
       setIsLogin(true);
     } else {

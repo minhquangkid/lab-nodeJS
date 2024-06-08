@@ -14,7 +14,7 @@ const AddProduct = (props) => {
     fetch("http://localhost:5000/add-product")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
 
         props.url(data.path);
       });
@@ -31,8 +31,8 @@ const AddProduct = (props) => {
     }
 
     if (!isValidImageUrl(imageRef.current.value)) {
-      console.log(isValidImageUrl(imageRef.current.value));
-      console.log(imageRef.current.value);
+      //console.log(isValidImageUrl(imageRef.current.value));
+      //console.log(imageRef.current.value);
       alert("Image URL must be valid");
       return;
     }
@@ -67,7 +67,7 @@ const AddProduct = (props) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
         window.location.replace("/");
       } else {
         console.error("Failed to add product");

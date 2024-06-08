@@ -23,7 +23,7 @@ const Login = (props) => {
     props.url("/login");
 
     let userId = Cookies.get("userId");
-    console.log(userId);
+    //console.log(userId);
 
     if (userId != undefined) {
       window.location.replace("/");
@@ -38,7 +38,7 @@ const Login = (props) => {
     // })
     //   .then((res) => res.json())
     //   .then((data) => {
-    //     console.log(data);
+    //     //console.log(data);
     //     if (data.loggedIn) {
     //       setLoginStatus(data.user);
     //     } else {
@@ -50,8 +50,8 @@ const Login = (props) => {
   const submit = (event) => {
     setIsInVaild(false);
 
-    console.log(emailRef.current.value);
-    console.log(pass.current.value);
+    //console.log(emailRef.current.value);
+    //console.log(pass.current.value);
 
     if (emailRef.current.value == "") {
       setIsInVaild(true);
@@ -84,7 +84,7 @@ const Login = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
 
         if (data === true) {
           localStorage.setItem(
@@ -102,9 +102,9 @@ const Login = (props) => {
       })
       .catch((error) => {
         // Error occurred during the API call, try catch cũng dùng giống vậy
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
+        //console.log(error.response.data);
+        //console.log(error.response.status);
+        //console.log(error.response.headers);
 
         return;
       });

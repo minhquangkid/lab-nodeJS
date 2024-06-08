@@ -9,7 +9,7 @@ const Cart = (props) => {
     fetch("http://localhost:5000/carts")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
+        //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
         setlist(data.products);
 
         props.url("/cart");
@@ -21,7 +21,7 @@ const Cart = (props) => {
     fetch(`http://localhost:5000/delete-cart/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         navigate("/");
       })
       .catch((err) => console.log(err));
@@ -33,7 +33,7 @@ const Cart = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         navigate("/order");
       })
       .catch((err) => console.log(err));

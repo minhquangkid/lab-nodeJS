@@ -9,7 +9,7 @@ const Order = (props) => {
     fetch("http://localhost:5000/orders")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         setlist(data);
 
         props.url("/order");

@@ -1,7 +1,7 @@
 const path = require("path");
 
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
 const express = require("express");
@@ -37,7 +37,7 @@ const store = new MongoDBStore({
 });
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(cookieParser());
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
@@ -55,7 +55,24 @@ app.use(
     store: store,
   })
 );
+
 // app.use(csrfProtection);
+
+app.use((req, res, next) => {
+  //console.log(req.session);
+  console.log("app.js here : ", req.session.user);
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then((user) => {
+      req.user = user;
+      console.log("app.js : " + req.user);
+      next();
+    })
+    .catch((err) => console.log(err));
+});
+
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
@@ -64,18 +81,6 @@ app.use(adminRoutes);
 app.use(shopRoutes);
 
 app.use(authRoutes);
-
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    return next();
-  }
-  User.findById(req.session.user._id)
-    .then((user) => {
-      req.user = user;
-      next();
-    })
-    .catch((err) => console.log(err));
-});
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;

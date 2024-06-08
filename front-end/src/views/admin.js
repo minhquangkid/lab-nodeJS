@@ -9,7 +9,7 @@ const Admin = (props) => {
     fetch("http://localhost:5000/products")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
+        //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
         setlist(data.prods);
 
         props.url("/admin");
@@ -25,7 +25,7 @@ const Admin = (props) => {
     fetch(`http://localhost:5000/delete-product/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         navigate("/");
       })
       .catch((err) => console.log(err));
