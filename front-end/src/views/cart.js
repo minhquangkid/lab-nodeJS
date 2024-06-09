@@ -1,13 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CartApi from "../api/cartApi";
 
 const Cart = (props) => {
   const [list, setlist] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/carts")
-      .then((res) => res.json())
+    // fetch("http://localhost:5000/carts")
+    //   .then((res) => res.json())
+    CartApi.getCart()
       .then((data) => {
         //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
         setlist(data.products);
@@ -18,11 +20,13 @@ const Cart = (props) => {
   }, []);
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/delete-cart/${id}`)
-      .then((res) => res.json())
+    // fetch(`http://localhost:5000/delete-cart/${id}`)
+    //   .then((res) => res.json())
+    CartApi.deleteCart(id)
       .then((data) => {
         //console.log(data);
-        navigate("/");
+        // navigate("/");
+        window.location.reload();
       })
       .catch((err) => console.log(err));
   };

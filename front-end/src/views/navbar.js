@@ -1,25 +1,19 @@
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import "../CSS/main.css";
+import UserApi from "../api/authentication";
 // do dùng <a> mà ko dùng <link> nên web sẽ bị load lại mỗi lần chuyển route, vì vậy Navbar sẽ chạy lại mỗi lần trong app.js nên ta ko cần dùng useEffect, còn nếu dùng Link thì phải dùng useState (có thể dùng thêm useEffect) để có thể cập nhật được props.receive
 
 const Navbar = (props) => {
   const logoutHandle = () => {
     // localStorage.removeItem("userInf");
 
-    fetch(`http://localhost:5000/logout`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        document.cookie =
-          "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        //console.log(data);
-        window.location.replace("/");
-      });
+    UserApi.logout().then((data) => {
+      document.cookie =
+        "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      //console.log(data);
+      window.location.replace("/");
+    });
   };
 
   return (

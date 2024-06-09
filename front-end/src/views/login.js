@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import "../CSS/product.css";
 import "../CSS/forms.css";
 import "../CSS/main.css";
+import UserApi from "../api/authentication";
 const Login = (props) => {
   const [message, setMessage] = useState("");
   const [isInVaild, setIsInVaild] = useState(false);
@@ -71,44 +72,72 @@ const Login = (props) => {
       return;
     }
 
-    fetch(`http://localhost:5000/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: emailRef.current.value,
-        password: pass.current.value,
-      }),
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
+    // fetch(`http://localhost:5000/login`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     email: emailRef.current.value,
+    //     password: pass.current.value,
+    //   }),
+    //   credentials: "include",
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     //console.log(data);
 
-        if (data === true) {
-          localStorage.setItem(
-            "userInf",
-            JSON.stringify({
-              email: emailRef.current.value,
-              password: pass.current.value,
-            })
-          );
-          window.location.replace("/");
-        } else {
-          setIsInVaild(true);
-          setMessage(data.message);
-        }
-      })
-      .catch((error) => {
-        // Error occurred during the API call, try catch cũng dùng giống vậy
-        //console.log(error.response.data);
-        //console.log(error.response.status);
-        //console.log(error.response.headers);
+    //     if (data === true) {
+    //       localStorage.setItem(
+    //         "userInf",
+    //         JSON.stringify({
+    //           email: emailRef.current.value,
+    //           password: pass.current.value,
+    //         })
+    //       );
+    //       window.location.replace("/");
+    //     } else {
+    //       setIsInVaild(true);
+    //       setMessage(data.message);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     // Error occurred during the API call, try catch cũng dùng giống vậy
+    //     //console.log(error.response.data);
+    //     //console.log(error.response.status);
+    //     //console.log(error.response.headers);
 
-        return;
-      });
+    //     return;
+    //   });
+
+    let data = {
+      email: emailRef.current.value,
+      password: pass.current.value,
+    };
+    loginHandle(data);
   };
+
+  async function loginHandle(data) {
+    try {
+      let result = await UserApi.login(data);
+      console.log(result);
+      if (result === true) {
+        localStorage.setItem(
+          "userInf",
+          JSON.stringify({
+            email: emailRef.current.value,
+            password: pass.current.value,
+          })
+        );
+        window.location.replace("/");
+      } else {
+        setIsInVaild(true);
+        setMessage(result.message);
+      }
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  }
 
   return (
     <Fragment>

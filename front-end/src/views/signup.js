@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/product.css";
 import "../CSS/forms.css";
 import "../CSS/main.css";
+import UserApi from "../api/authentication";
 const SignUp = (props) => {
   const [message, setMessage] = useState("");
   const [isInVaild, setIsInVaild] = useState(false);
@@ -58,32 +59,19 @@ const SignUp = (props) => {
       return;
     }
 
-    fetch(`http://localhost:5000/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: emailRef.current.value,
-        password: pass.current.value,
-      }),
+    UserApi.signUp({
+      email: emailRef.current.value,
+      password: pass.current.value,
     })
-      .then((res) => res.json())
       .then((data) => {
         //console.log(data);
 
-        if (data === true) {
-          navigate("/login");
-        } else {
-          setIsInVaild(true);
-          setMessage(data.message);
-        }
+        navigate("/login");
       })
       .catch((error) => {
-        // Error occurred during the API call, try catch cũng dùng giống vậy
-        //console.log(error.response.data);
-        //console.log(error.response.status);
-        //console.log(error.response.headers);
+        setIsInVaild(true);
+        console.log(error);
+        setMessage(error.response.data.message);
 
         return;
       });

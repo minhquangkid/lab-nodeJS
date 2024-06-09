@@ -16,52 +16,43 @@ exports.getProducts = (req, res, next) => {
 };
 
 exports.getCarts = (req, res, next) => {
-  console.log(req.user);
-  res.status(200).send(req.user);
-  // if (req.user.cart.items.length == 0) {
-  //   console.log("User doesn't have cart");
-  // }
+  // console.log(req.user);
+  // res.status(200).send(req.user);
+  if (req.user.cart.items.length == 0) {
+    console.log("User doesn't have cart");
+    return res.status(200).send({
+      path: "/cart",
+      pageTitle: "Your Cart",
+      products: [],
+    });
+  }
 
-  // if (req.user.cart.items[0].productId) {
-  //   // Create a new query object using User.findById()
-  //   User.findById(req.user._id)
-  //     .populate("cart.items.productId") // Chain the populate method
-  //     .exec() // Execute the query
-  //     .then((user) => {
-  //       //console.log(user);
-  //       const products = user.cart.items;
-  //       res.status(200).send({
-  //         path: "/cart",
-  //         pageTitle: "Your Cart",
-  //         products: products,
-  //       });
-  //     })
-  //     .catch((err) => console.log(err));
-  // } else {
-  //   // Handle the case when req.user is not available or does not have the populate method
-  //   console.log(
-  //     "req.user does not exist or does not have the populate method."
-  //   );
-  //   res.status(404);
-  // }
+  // Create a new query object using User.findById()
+  User.findById(req.user._id)
+    .populate("cart.items.productId") // Chain the populate method
+    .exec() // Execute the query
+    .then((user) => {
+      //console.log(user);
+      const products = user.cart.items;
+      res.status(200).send({
+        path: "/cart",
+        pageTitle: "Your Cart",
+        products: products,
+      });
+    })
+    .catch((err) => console.log(err));
 };
 exports.getCartDeleteProduct = (req, res, next) => {
   const prodId = req.params.id;
   //console.log(prodId);
-
-  req.user
-    .getCart()
-    .then((cart) => {
-      return cart.getProducts({ where: { id: prodId } });
-    })
-    .then((products) => {
-      const product = products[0];
-      return product.cartItem.destroy();
+  Product.findById(prodId)
+    .then((product) => {
+      return req.user.removeFromCart(prodId);
     })
     .then((result) => {
+      //console.log(result);
       res.status(200).send(true);
-    })
-    .catch((err) => console.log(err));
+    });
 };
 
 exports.getIndex = (req, res, next) => {

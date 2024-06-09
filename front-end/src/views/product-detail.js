@@ -1,13 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ShopApi from "../api/shopApi";
 
 const ProductDetail = (props) => {
   const [detail, setDetail] = useState([]);
   const params = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/products/${params.id}`)
-      .then((res) => res.json())
+    // fetch(`http://localhost:5000/products/${params.id}`)
+    //   .then((res) => res.json())
+    ShopApi.getProductDetail(params.id)
       .then((data) => {
         //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
         setDetail(data.product);

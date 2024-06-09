@@ -1,14 +1,24 @@
 import { Fragment, useEffect, useState } from "react";
+import ShopApi from "../api/shopApi";
 
 const Shop = (props) => {
   const [list, setlist] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000", {
-      method: "GET",
-      credentials: "include", // Để gửi cookie session tới server
-    })
-      .then((res) => res.json())
+    // fetch("http://localhost:5000", {
+    //   method: "GET",
+    //   credentials: "include", // Để gửi cookie session tới server
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
+    //     setlist(data.prods);
+
+    //     props.url(data.path);
+    //   })
+    //   .catch((err) => console.log(err));
+
+    ShopApi.getShop()
       .then((data) => {
         //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
         setlist(data.prods);

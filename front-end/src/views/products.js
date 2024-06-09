@@ -1,15 +1,21 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ShopApi from "../api/shopApi";
+import CartApi from "../api/cartApi";
 
 const Products = (props) => {
   const [list, setlist] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then((res) => res.json())
+    // fetch("http://localhost:5000/products", {
+    //   method: "GET",
+    //   credentials: "include", // Để gửi cookie session tới server
+    // })
+    //   .then((res) => res.json())
+    ShopApi.getProduct()
       .then((data) => {
-        //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
+        console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
         setlist(data.prods);
 
         props.url(data.path);
@@ -23,14 +29,15 @@ const Products = (props) => {
   };
 
   const addCart = (id) => {
-    fetch(`http://localhost:5000/cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    })
-      .then((res) => res.json())
+    // fetch(`http://localhost:5000/cart`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(),
+    // })
+    //   .then((res) => res.json())
+    CartApi.addCart({ id: id })
       .then((data) => {
         //console.log(data);
         navigate("/cart");

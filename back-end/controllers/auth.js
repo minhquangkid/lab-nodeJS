@@ -45,8 +45,7 @@ exports.postLogin = (req, res, next) => {
               req.session.user = user;
               req.session.isLoggedIn = true;
 
-              res.cookie();
-
+              //res.cookie();
               return res.status(200).send(true);
             });
           } else {
