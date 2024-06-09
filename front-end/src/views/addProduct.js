@@ -1,6 +1,7 @@
 import "../CSS/product.css";
 import "../CSS/forms.css";
 import { Fragment, useEffect, useRef } from "react";
+import AdminApi from "../api/adminApi";
 
 const AddProduct = (props) => {
   const titleRef = useRef(null);
@@ -11,13 +12,13 @@ const AddProduct = (props) => {
   const user = JSON.parse(localStorage.getItem("userInf"));
 
   useEffect(() => {
-    fetch("http://localhost:5000/add-product")
-      .then((res) => res.json())
-      .then((data) => {
-        //console.log(data);
+    // fetch("http://localhost:5000/add-product")
+    //   .then((res) => res.json())
+    AdminApi.getAddProduct().then((data) => {
+      //console.log(data);
 
-        props.url(data.path);
-      });
+      props.url(data.path);
+    });
   }, []);
 
   async function submitForm(event) {
@@ -49,32 +50,46 @@ const AddProduct = (props) => {
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:5000/add-product", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: titleRef.current.value,
-          imageUrl: imageRef.current.value,
-          price: priceRef.current.value,
-          description: desRef.current.value,
-          email: user.email,
-        }),
-      });
+    // try {
+    //   const response = await fetch("http://localhost:5000/add-product", {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       title: titleRef.current.value,
+    //       imageUrl: imageRef.current.value,
+    //       price: priceRef.current.value,
+    //       description: desRef.current.value,
+    //       email: user.email,
+    //     }),
+    //   });
 
-      if (response.ok) {
-        const data = await response.json();
-        //console.log(data);
+    //   if (response.ok) {
+    //     const data = await response.json();
+    //     //console.log(data);
+    //     window.location.replace("/");
+    //   } else {
+    //     console.error("Failed to add product");
+    //   }
+    // } catch (error) {
+    //   console.error("An error occurred:", error);
+    // }
+    AdminApi.postAddProduct({
+      title: titleRef.current.value,
+      imageUrl: imageRef.current.value,
+      price: priceRef.current.value,
+      description: desRef.current.value,
+      email: user.email,
+    })
+      .then((result) => {
+        console.log(result);
         window.location.replace("/");
-      } else {
-        console.error("Failed to add product");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function isValidTitle(input) {

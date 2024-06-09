@@ -1,13 +1,16 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ShopApi from "../api/shopApi";
+import AdminApi from "../api/adminApi";
 
 const Admin = (props) => {
   const [list, setlist] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/products")
-      .then((res) => res.json())
+    // fetch("http://localhost:5000/products")
+    //   .then((res) => res.json())
+    ShopApi.getProduct()
       .then((data) => {
         //console.log(data); // data sẽ trả về 1 object với nhiều key, trong đó có key prods chứa array
         setlist(data.prods);
@@ -22,8 +25,9 @@ const Admin = (props) => {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/delete-product/${id}`)
-      .then((res) => res.json())
+    // fetch(`http://localhost:5000/delete-product/${id}`)
+    //   .then((res) => res.json())
+    AdminApi.deleteProduct(id)
       .then((data) => {
         //console.log(data);
         navigate("/");
@@ -34,9 +38,9 @@ const Admin = (props) => {
   return (
     <Fragment>
       <div className="grid">
-        {list.map((items) => {
+        {list.map((items, index) => {
           return (
-            <div key={items.price}>
+            <div key={index}>
               <article className="card product-item">
                 <header className="card__header">
                   <h1 className="product__title">{items.title}</h1>
