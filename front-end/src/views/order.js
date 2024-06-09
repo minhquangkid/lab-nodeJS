@@ -1,13 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import OrderApi from "../api/orderApi";
 
 const Order = (props) => {
   const [list, setlist] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:5000/orders")
-      .then((res) => res.json())
+    //   fetch("http://localhost:5000/orders")
+    //     .then((res) => res.json())
+    OrderApi.getOrder()
       .then((data) => {
         //console.log(data);
         setlist(data);

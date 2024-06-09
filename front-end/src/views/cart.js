@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CartApi from "../api/cartApi";
+import OrderApi from "../api/orderApi";
 
 const Cart = (props) => {
   const [list, setlist] = useState([]);
@@ -32,10 +33,11 @@ const Cart = (props) => {
   };
 
   const orderHandle = () => {
-    fetch(`http://localhost:5000/create-order`, {
-      method: "POST",
-    })
-      .then((res) => res.json())
+    // fetch(`http://localhost:5000/create-order`, {
+    //   method: "POST",
+    // })
+    //   .then((res) => res.json())
+    OrderApi.createOrder()
       .then((data) => {
         //console.log(data);
         navigate("/order");
