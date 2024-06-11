@@ -9,6 +9,10 @@ const AdminApi = {
     const url = "/add-product";
     return axiosClient.post(url, data);
   },
+  editProduct: (data) => {
+    const url = "/edit-product";
+    return axiosClient.post(url, data);
+  },
   getProductDetail: (id) => {
     const url = `/products/${id}`;
     return axiosClient.get(url);

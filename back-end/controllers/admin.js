@@ -56,7 +56,7 @@ exports.editProduct = (req, res, next) => {
   Product.findById(prodId)
     .then((product) => {
       if (product.userId.toString() !== req.user._id.toString()) {
-        return res.redirect("/");
+        return res.status(400).send("Not found product");
       }
       product.title = updatedTitle;
       product.price = updatedPrice;
@@ -64,7 +64,7 @@ exports.editProduct = (req, res, next) => {
       product.imageUrl = updatedImageUrl;
       return product.save().then((result) => {
         //console.log("UPDATED PRODUCT!");
-        res.redirect("/admin/products");
+        res.status(200).send(true);
       });
     })
     .catch((err) => console.log(err));
