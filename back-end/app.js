@@ -17,7 +17,6 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -82,11 +81,11 @@ app.use(shopRoutes);
 
 app.use(authRoutes);
 
-app.use((req, res, next) => {
-  res.locals.isAuthenticated = req.session.isLoggedIn;
-  // res.locals.csrfToken = req.csrfToken();
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.isAuthenticated = req.session.isLoggedIn;
+//   // res.locals.csrfToken = req.csrfToken();
+//   next();
+// });
 
 //app.use(errorController.get404);
 
