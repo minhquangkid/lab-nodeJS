@@ -37,7 +37,7 @@ exports.postLogin = (req, res, next) => {
           if (doMatch) {
             req.session.save((err) => {
               if (err) {
-                console.log(err);
+                res.status(500).send(err);
                 return res.status(500).send({
                   message: "Session save error",
                 });
@@ -55,10 +55,10 @@ exports.postLogin = (req, res, next) => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          res.status(500).send(err);
         });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.postSignup = (req, res, next) => {
@@ -95,7 +95,7 @@ exports.postSignup = (req, res, next) => {
             },
             function (err, inf) {
               if (err) {
-                console.log(err);
+                res.status(500).send(err);
               } else {
                 //console.log("Email sent: " + inf.response);
               }
@@ -106,7 +106,7 @@ exports.postSignup = (req, res, next) => {
         });
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).send(err);
     });
 };
 
@@ -119,7 +119,7 @@ exports.getLogout = (req, res, next) => {
   "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   */
   req.session.destroy((err) => {
-    console.log(err);
+    res.status(500).send(err);
     res.clearCookie("userId"); // phải clear cookie bên front-end nữa
     res.status(200).send(true);
   });

@@ -36,7 +36,7 @@ exports.postAddProduct = async (req, res, next) => {
         res.status(200).send(true);
       })
       .catch((err) => {
-        console.log(err);
+        res.status(500).send(err);
       });
   } else {
     //console.log("User not found");
@@ -67,7 +67,7 @@ exports.editProduct = (req, res, next) => {
         res.status(200).send(true);
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 
   // Product.findById(prodId)
   //   .then(((product)) => {
@@ -81,7 +81,7 @@ exports.editProduct = (req, res, next) => {
   //     //console.log("UPDATED PRODUCT!");
   //     res.redirect("http://localhost:3000");
   //   })
-  //   .catch((err) => console.log(err));
+  //   .catch((err) => res.status(500).send(err));
 };
 
 exports.deleteProduct = (req, res, next) => {
@@ -92,5 +92,5 @@ exports.deleteProduct = (req, res, next) => {
       //console.log("DESTROYED PRODUCT");
       res.status(200).send(true);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 };

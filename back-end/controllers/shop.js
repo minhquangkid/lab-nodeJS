@@ -11,7 +11,7 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).send(err);
     });
 };
 
@@ -40,7 +40,7 @@ exports.getCarts = (req, res, next) => {
         products: products,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 };
 exports.getCartDeleteProduct = (req, res, next) => {
   const prodId = req.params.id;
@@ -65,7 +65,7 @@ exports.getIndex = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      res.status(500).send(err);
     });
 };
 
@@ -88,7 +88,7 @@ exports.getProductDetail = (req, res, next) => {
         product: product,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.postCart = (req, res, next) => {
@@ -109,13 +109,13 @@ exports.getOrders = (req, res, next) => {
   //   .then((orders) => {
   //     res.status(200).send(orders);
   //   })
-  //   .catch((err) => console.log(err));
+  //   .catch((err) => res.status(500).send(err));
 
   Order.find({ "user.userId": req.user._id })
     .then((orders) => {
       res.status(200).send(orders);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 };
 
 exports.postOrder = (req, res, next) => {
@@ -143,7 +143,7 @@ exports.postOrder = (req, res, next) => {
     .then(() => {
       res.status(200).send(true);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(500).send(err));
 
   /*
   The spread operator (...) is used to create a new object that includes all the properties from i.productId._doc.
