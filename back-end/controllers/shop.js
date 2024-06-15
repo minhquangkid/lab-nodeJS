@@ -1,6 +1,9 @@
 const Product = require("../models/product");
 const Order = require("../models/order");
 const User = require("../models/user");
+const path = require("path");
+const fs = require("fs");
+
 exports.getProducts = (req, res, next) => {
   Product.find()
     .then((products) => {
@@ -101,6 +104,20 @@ exports.postCart = (req, res, next) => {
       //console.log(result);
       res.status(200).send(true);
     });
+};
+
+exports.getInvoice = (req, res, next) => {
+  const invoicePath = path.join("data", "invoices", "test-pdf.pdf");
+
+  fs.readFile(invoicePath, (err, data) => {
+    if (err) {
+      return next(err);
+    }
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "inline; fileName=quang123.pdf"); // dùng cái này để trình duyệt mở xem trước
+    // res.setHeader("Content-Disposition", "attachment; fileName=quang123.pdf"); // cái này để tải về mà ko xem
+    return res.status(200).send(data);
+  });
 };
 
 exports.getOrders = (req, res, next) => {

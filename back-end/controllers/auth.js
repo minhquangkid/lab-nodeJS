@@ -119,7 +119,10 @@ exports.getLogout = (req, res, next) => {
   "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   */
   req.session.destroy((err) => {
-    res.status(500).send(err);
+    if (err) {
+      console.log(err);
+      return res.status(400).send(err);
+    }
     res.clearCookie("userId"); // phải clear cookie bên front-end nữa
     res.status(200).send(true);
   });

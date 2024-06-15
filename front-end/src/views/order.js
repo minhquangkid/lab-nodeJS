@@ -31,7 +31,10 @@ const Order = (props) => {
                   {item.products.map((e) => {
                     return (
                       <li key={e.product._id}>
-                        {e.product.title} ( {e.quantity})
+                        {e.product.title} ( {e.quantity}) -
+                        <a href="http://localhost:5000/invoice" target="_blank">
+                          invoice
+                        </a>
                       </li>
                     );
                   })}
