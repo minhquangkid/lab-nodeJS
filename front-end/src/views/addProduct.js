@@ -2,6 +2,7 @@ import "../CSS/product.css";
 import "../CSS/forms.css";
 import { Fragment, useEffect, useRef } from "react";
 import AdminApi from "../api/adminApi";
+import axios from "axios";
 
 const AddProduct = (props) => {
   const titleRef = useRef(null);
@@ -31,13 +32,6 @@ const AddProduct = (props) => {
       return;
     }
 
-    if (!isValidImageUrl(imageRef.current.value)) {
-      //console.log(isValidImageUrl(imageRef.current.value));
-      //console.log(imageRef.current.value);
-      alert("Image URL must be valid");
-      return;
-    }
-
     if (!isRealNumber(priceRef.current.value)) {
       alert("Price must be a real number");
       return;
@@ -50,46 +44,64 @@ const AddProduct = (props) => {
       return;
     }
 
-    // try {
-    //   const response = await fetch("http://localhost:5000/add-product", {
-    //     method: "POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       title: titleRef.current.value,
-    //       imageUrl: imageRef.current.value,
-    //       price: priceRef.current.value,
-    //       description: desRef.current.value,
-    //       email: user.email,
-    //     }),
-    //   });
+    try {
+      const formData = new FormData();
+      formData.append("image", imageRef.current.files[0]);
+      formData.append("description", desRef.current.value);
 
-    //   if (response.ok) {
-    //     const data = await response.json();
-    //     //console.log(data);
+      const result = await axios.post(
+        "http://localhost:5000/add-product",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+          credentials: "include", // bắt buộc phải có cái này mới truyền được session và cookie
+        }
+      );
+      console.log(result.data);
+
+      // const response = await fetch("http://localhost:5000/add-product", {
+      //   method: "POST",
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": "multipart/form-data", // đây là 1 form chứa cả binary, text, json,...
+      //   },
+      //   body: JSON.stringify({
+      //     title: titleRef.current.value,
+      //     imageUrl: imageRef.current.files[0],
+      //     price: priceRef.current.value,
+      //     description: desRef.current.value,
+      //     email: user.email,
+      //   }),
+      // });
+
+      // if (response.ok) {
+      //   const data = await response.json();
+      //   //console.log(data);
+      //   window.location.replace("/");
+      // } else {
+      //   console.error("Failed to add product");
+      // }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+
+    ////////////// when using image url , because the header is set "content-type": "application/json"
+    // AdminApi.postAddProduct({
+    //   title: titleRef.current.value,
+    //   // imageUrl: imageRef.current.value,
+    //   imageUrl: imageRef.current.files[0],
+    //   price: priceRef.current.value,
+    //   description: desRef.current.value,
+    //   email: user.email,
+    // })
+    //   .then((result) => {
+    //     console.log(result);
     //     window.location.replace("/");
-    //   } else {
-    //     console.error("Failed to add product");
-    //   }
-    // } catch (error) {
-    //   console.error("An error occurred:", error);
-    // }
-    AdminApi.postAddProduct({
-      title: titleRef.current.value,
-      imageUrl: imageRef.current.value,
-      price: priceRef.current.value,
-      description: desRef.current.value,
-      email: user.email,
-    })
-      .then((result) => {
-        console.log(result);
-        window.location.replace("/");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }
 
   function isValidTitle(input) {
@@ -133,7 +145,8 @@ const AddProduct = (props) => {
           <label htmlFor="title">Title</label>
           <input type="text" name="title" id="title" ref={titleRef} />
           <label htmlFor="title">Image URL</label>
-          <input type="text" name="imageUrl" id="imageUrl" ref={imageRef} />
+          {/* <input type="text" name="imageUrl" id="imageUrl" ref={imageRef} /> */}
+          <input type="file" name="image" id="image" ref={imageRef} />
           <label htmlFor="title">Price</label>
           <input type="text" name="price" id="price" ref={priceRef} />
           <label htmlFor="title">Description</label>

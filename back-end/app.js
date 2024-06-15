@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 
 const bodyParser = require("body-parser");
 // const cookieParser = require("cookie-parser");
@@ -7,6 +8,7 @@ const session = require("express-session");
 const express = require("express");
 const mongoose = require("mongoose");
 const MongoDBStore = require("connect-mongodb-session")(session);
+const multer = require("multer");
 
 const Product = require("./models/product");
 const User = require("./models/user");
@@ -40,6 +42,36 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //app.use(express.static(path.join(__dirname, 'public')));
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const folderPath = path.join(__dirname, "images");
+    fs.mkdirSync(folderPath, { recursive: true }); // Create folder if not exists
+    cb(null, folderPath);
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
+    );
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
+
 app.use(
   session({
     key: "userId",
@@ -59,14 +91,14 @@ app.use(
 
 app.use((req, res, next) => {
   //console.log(req.session);
-  console.log("app.js here : ", req.session.user);
+  // console.log("app.js here : ", req.session.user);
   if (!req.session.user) {
     return next();
   }
   User.findById(req.session.user._id)
     .then((user) => {
       req.user = user;
-      console.log("app.js : " + req.user);
+      // console.log("app.js : " + req.user);
       next();
     })
     .catch((err) => console.log(err));
