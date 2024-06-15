@@ -46,16 +46,19 @@ const AddProduct = (props) => {
 
     try {
       const formData = new FormData();
-      formData.append("image", imageRef.current.files[0]);
+      formData.append("image", imageRef.current.files[0]); // phải ghi đúng key là image vì bên back-end khai báo multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
       formData.append("description", desRef.current.value);
+      formData.append("title", titleRef.current.value);
+      formData.append("price", priceRef.current.value);
+      formData.append("email", user.email);
 
       const result = await axios.post(
         "http://localhost:5000/add-product",
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" }, // truyền form, chứa được cả binary, string
           withCredentials: true,
-          credentials: "include", // bắt buộc phải có cái này mới truyền được session và cookie
+          credentials: "include",
         }
       );
       console.log(result.data);

@@ -12,43 +12,43 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 exports.postAddProduct = async (req, res, next) => {
+  console.log(req.body);
+  console.log(req.file);
   const imageName = req.file.filename;
-  const description = req.body.description; // Save this data to a database
-  console.log(description, imageName);
 
-  // console.log(req.body);
-  // console.log(req.file);
-  // const title = req.body.title;
-  // const imageUrl = req.body.imageUrl;
-  // const price = req.body.price;
-  // const description = req.body.description;
+  console.log(imageName);
 
-  // const user = await User.findOne({ email: req.body.email }).exec();
+  const title = req.body.title;
+  const imageUrl = req.file.path; // chỉ lưu path hình trong máy, nhưng thẻ image ko mở được
+  const price = req.body.price;
+  const description = req.body.description;
 
-  // if (user) {
-  //   const product = new Product({
-  //     title: title,
-  //     price: price,
-  //     description: description,
-  //     imageUrl: imageUrl,
-  //     userId: user._id,
-  //   });
-  //   product
-  //     .save()
-  //     .then((result) => {
-  //       // //console.log(result);
-  //       //console.log("Created Product");
-  //       res.status(200).send(true);
-  //     })
-  //     .catch((err) => {
-  //       res.status(500).send(err);
-  //     });
-  // } else {
-  //   //console.log("User not found");
-  //   // Handle the case where the user is not found, e.g., return a not-found response
-  //   res.status(400);
-  //   return;
-  // }
+  const user = await User.findOne({ email: req.body.email }).exec();
+
+  if (user) {
+    const product = new Product({
+      title: title,
+      price: price,
+      description: description,
+      imageUrl: imageUrl,
+      userId: user._id,
+    });
+    product
+      .save()
+      .then((result) => {
+        // //console.log(result);
+        //console.log("Created Product");
+        res.status(200).send(true);
+      })
+      .catch((err) => {
+        res.status(500).send(err);
+      });
+  } else {
+    //console.log("User not found");
+    // Handle the case where the user is not found, e.g., return a not-found response
+    res.status(400);
+    return;
+  }
 };
 
 exports.editProduct = (req, res, next) => {

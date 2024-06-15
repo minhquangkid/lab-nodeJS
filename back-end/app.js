@@ -46,7 +46,7 @@ const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     const folderPath = path.join(__dirname, "images");
     fs.mkdirSync(folderPath, { recursive: true }); // Create folder if not exists
-    cb(null, folderPath);
+    cb(null, folderPath); // .cd là Hàm callback trong Node.js thường có hai tham số: lỗi (error) và kết quả (result). Khi đặt null, điều này có nghĩa là không có lỗi nào xảy ra. Nếu có lỗi, bạn sẽ truyền đối tượng lỗi vào đây.
   },
   filename: (req, file, cb) => {
     cb(
@@ -69,7 +69,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 app.use(
-  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image") //Cấu hình và sử dụng multer để xử lý việc tải lên một tệp tin duy nhất với tên trường (field name) là "image".
 );
 
 app.use(
