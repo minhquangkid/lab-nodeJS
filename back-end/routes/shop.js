@@ -23,7 +23,7 @@ router.delete("/delete-cart/:id", isAuth, shopController.getCartDeleteProduct);
 
 router.post("/create-order", isAuth, shopController.postOrder);
 
-router.get("/invoice", isAuth, shopController.getInvoice);
+router.get("/invoice/:orderId", isAuth, shopController.getInvoice);
 
 // router.get("/checkout", shopController.getCheckout);
 

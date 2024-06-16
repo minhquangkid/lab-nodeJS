@@ -3,6 +3,7 @@ const Order = require("../models/order");
 const User = require("../models/user");
 const path = require("path");
 const fs = require("fs");
+const PDFDocument = require("pdfkit");
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -107,7 +108,8 @@ exports.postCart = (req, res, next) => {
 };
 
 exports.getInvoice = (req, res, next) => {
-  const invoicePath = path.join("data", "invoices", "test-pdf.pdf");
+  ///////////////////// lấy ra file pdf đã có sẵn
+  //const invoicePath = path.join("data", "invoices", "test-pdf.pdf");
 
   // cách này là nó phải đọc toàn bộ file xong hết rồi lưu vô ram, xong mới trả về FE thì nó lâu với dùng dc với file nhỏ, truy cập ít
   // fs.readFile(invoicePath, (err, data) => {
@@ -121,11 +123,56 @@ exports.getInvoice = (req, res, next) => {
   // });
 
   // cách này là nhỏ ko đọc hết mà chuyển thành luồng stream rồi gửi luồng stream xuống FE nên sẽ xử lý dc file lớn và lượng truy cập cao
-  const file = fs.createReadStream(invoicePath);
-  res.setHeader("Content-Type", "application/pdf");
-  res.setHeader("Content-Disposition", "inline; fileName=quang123.pdf");
+  // const file = fs.createReadStream(invoicePath);
+  // res.setHeader("Content-Type", "application/pdf");
+  // res.setHeader("Content-Disposition", "inline; fileName=quang123.pdf");
 
-  file.pipe(res);
+  // file.pipe(res);
+
+  ///////////// tạo ra pdf rồi gửi lại FE
+  const orderId = req.params.orderId;
+  Order.findById(orderId).then((order) => {
+    if (!order) {
+      return next(new Error("No order found."));
+    }
+    if (order.user.userId.toString() !== req.user._id.toString()) {
+      return next(new Error("Unauthorized"));
+    }
+    const invoiceName = "invoice-" + orderId + ".pdf";
+    const invoicePath = path.join("data", "invoices", invoiceName);
+
+    const pdfDoc = new PDFDocument();
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      'inline; filename="' + invoiceName + '"'
+    );
+    pdfDoc.pipe(fs.createWriteStream(invoicePath));
+    pdfDoc.pipe(res);
+
+    pdfDoc.fontSize(26).text("Invoice", {
+      underline: true,
+    });
+    pdfDoc.text("-----------------------");
+    let totalPrice = 0;
+    order.products.forEach((prod) => {
+      totalPrice += prod.quantity * prod.product.price;
+      pdfDoc
+        .fontSize(14)
+        .text(
+          prod.product.title +
+            " - " +
+            prod.quantity +
+            " x " +
+            "$" +
+            prod.product.price
+        );
+    });
+    pdfDoc.text("---");
+    pdfDoc.fontSize(20).text("Total Price: $" + totalPrice);
+
+    pdfDoc.end();
+  });
 };
 
 exports.getOrders = (req, res, next) => {

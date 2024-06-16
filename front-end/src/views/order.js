@@ -32,7 +32,10 @@ const Order = (props) => {
                     return (
                       <li key={e.product._id}>
                         {e.product.title} ( {e.quantity}) -
-                        <a href="http://localhost:5000/invoice" target="_blank">
+                        <a
+                          href={"http://localhost:5000/invoice/" + item._id}
+                          target="_blank"
+                        >
                           invoice
                         </a>
                       </li>
