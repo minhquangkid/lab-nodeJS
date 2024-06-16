@@ -97,11 +97,8 @@ const EditProduct = (props) => {
   }
 
   function isValidTitle(input) {
-    // Regular expression pattern to match letters and numbers
-    const pattern = /^[a-zA-Z0-9]+$/;
-
     // Check if the input string matches the pattern and is at least 3 characters long
-    return pattern.test(input) && input.length >= 3;
+    return input.length >= 3;
   }
 
   function isValidImageUrl(url) {
@@ -111,7 +108,8 @@ const EditProduct = (props) => {
     // // Check if the URL matches the pattern
     // return pattern.test(url);
 
-    return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+    // return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+    return url.length > 0;
   }
 
   function isRealNumber(input) {
