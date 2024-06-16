@@ -29,8 +29,14 @@ const Admin = (props) => {
     //   .then((res) => res.json())
     AdminApi.deleteProduct(id)
       .then((data) => {
-        //console.log(data);
-        navigate("/");
+        console.log(data);
+        // navigate("/");
+        if (data) {
+          // delete success
+          let newList = list.filter((e) => e._id != id);
+          console.log(newList);
+          setlist(newList);
+        }
       })
       .catch((err) => console.log(err));
   };
