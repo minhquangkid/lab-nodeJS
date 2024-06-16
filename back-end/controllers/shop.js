@@ -109,15 +109,23 @@ exports.postCart = (req, res, next) => {
 exports.getInvoice = (req, res, next) => {
   const invoicePath = path.join("data", "invoices", "test-pdf.pdf");
 
-  fs.readFile(invoicePath, (err, data) => {
-    if (err) {
-      return next(err);
-    }
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", "inline; fileName=quang123.pdf"); // dùng cái này để trình duyệt mở xem trước
-    // res.setHeader("Content-Disposition", "attachment; fileName=quang123.pdf"); // cái này để tải về mà ko xem
-    return res.status(200).send(data);
-  });
+  // cách này là nó phải đọc toàn bộ file xong hết rồi lưu vô ram, xong mới trả về FE thì nó lâu với dùng dc với file nhỏ, truy cập ít
+  // fs.readFile(invoicePath, (err, data) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   res.setHeader("Content-Type", "application/pdf");
+  //   res.setHeader("Content-Disposition", "inline; fileName=quang123.pdf"); // dùng cái này để trình duyệt mở xem trước
+  //   // res.setHeader("Content-Disposition", "attachment; fileName=quang123.pdf"); // cái này để tải về mà ko xem
+  //   return res.status(200).send(data);
+  // });
+
+  // cách này là nhỏ ko đọc hết mà chuyển thành luồng stream rồi gửi luồng stream xuống FE nên sẽ xử lý dc file lớn và lượng truy cập cao
+  const file = fs.createReadStream(invoicePath);
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", "inline; fileName=quang123.pdf");
+
+  file.pipe(res);
 };
 
 exports.getOrders = (req, res, next) => {

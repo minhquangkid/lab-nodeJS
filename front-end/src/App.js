@@ -36,7 +36,7 @@ function App() {
       setIsLogin(true);
     } else {
       setIsLogin(false);
-      navigate(`/login`);
+      navigate(`/`);
     }
   }, []);
 
@@ -64,6 +64,7 @@ function App() {
           </Fragment>
         ) : (
           <Fragment>
+            <Route path="/" element={<Shop url={getUrl} />} />
             <Route path="/signup" element={<SignUp url={getUrl} />} />
             <Route path="/login" element={<Login url={getUrl} />} />
           </Fragment>

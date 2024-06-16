@@ -23,6 +23,11 @@ const Navbar = (props) => {
           {!props.isLogin ? (
             <Fragment>
               <li className="main-header__item">
+                <Link to="/" className={props.receive === "/" ? "active" : ""}>
+                  Shop
+                </Link>
+              </li>
+              <li className="main-header__item">
                 <Link
                   to="/login"
                   className={props.receive === "/login" ? "active" : ""}
