@@ -1,5 +1,5 @@
 const path = require("path");
-
+const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -9,13 +9,28 @@ const feedRoutes = require("./routes/feed");
 const authRoutes = require("./routes/auth");
 
 const app = express();
+const cors = require("cors");
+
+// const fileStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "images");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, new Date().toISOString() + "-" + file.originalname);
+//   },
+// });
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "images");
+    const folderPath = path.join(__dirname, "images");
+    fs.mkdirSync(folderPath, { recursive: true }); // Create folder if not exists
+    cb(null, folderPath); // .cd là Hàm callback trong Node.js thường có hai tham số: lỗi (error) và kết quả (result). Khi đặt null, điều này có nghĩa là không có lỗi nào xảy ra. Nếu có lỗi, bạn sẽ truyền đối tượng lỗi vào đây.
   },
   filename: (req, file, cb) => {
-    cb(null, new Date().toISOString() + "-" + file.originalname);
+    cb(
+      null,
+      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
+    );
   },
 });
 
@@ -31,6 +46,12 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
 app.use(bodyParser.json()); // application/json
 app.use(
