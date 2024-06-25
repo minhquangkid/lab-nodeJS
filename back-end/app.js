@@ -88,6 +88,7 @@ mongoose
     const server = app.listen(8080);
     const io = require("./socket").init(server);
     io.on("connection", (socket) => {
+      // có file word ghi chú về socket.io, hãy đọc
       console.log("Client connected");
     });
   })
