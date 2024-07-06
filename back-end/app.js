@@ -129,3 +129,15 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+
+/*
+Ngoài các phương thức như GET, POST, PUT, và DELETE trong REST API, còn một số phương thức khác như HEAD, PATCH, CONNECT, OPTIONS, và TRACE1. Tuy nhiên, trong thực tế, phương thức GET và POST thường được sử dụng phổ biến nhất. Dưới đây là mô tả ngắn gọn về mỗi phương thức:
+
+GET: Sử dụng để lấy thông tin từ server theo URI đã cung cấp.
+HEAD: Tương tự như GET, nhưng response chỉ trả về header mà không có body.
+POST: Gửi thông tin tới server thông qua các tham số HTTP để tạo mới một resource.
+PUT: Cập nhật thông tin cho resource (toàn bộ resource).
+PATCH: Cập nhật thông tin cho resource (một phần của resource).
+DELETE: Xóa một resource trên server.
+
+  */
