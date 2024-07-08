@@ -108,6 +108,7 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 
+// phải đặt các route này cuối cùng vì để cho các middleware ở trên chạy trước
 app.use(adminRoutes);
 app.use(shopRoutes);
 
